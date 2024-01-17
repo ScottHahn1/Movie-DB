@@ -1,0 +1,99 @@
+nav {
+    background-color: black;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}
+
+nav li {
+    margin-left: 1rem;
+    cursor: pointer;
+}
+
+.dropdown {
+    position: absolute;
+    background-color: whitesmoke;
+    text-align: left;
+    font-size: .9rem;
+    width: 10%;
+    z-index: 2;
+}
+
+.dropdown p, .profile-dropdown p {
+    padding: .2rem .5rem;
+}
+
+.dropdown p:hover, .profile-dropdown p:hover {
+    background-color: rgb(233, 226, 226);
+}
+
+.dropdown a {
+    color: black;
+}
+
+.login-register {
+    width: 10rem;
+    display: flex;
+    justify-content: space-around;
+}
+
+.profile {
+    background-color: white;
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.profile-dropdown {
+    position: absolute;
+    background-color: white;
+    margin-top: 12%;
+}
+
+@media screen and (max-width: 500px) {
+    .login-register {
+        flex-direction: column;
+        width: 5rem;
+    }
+
+    .dropdown {
+        position: absolute;
+        background-color: whitesmoke;
+        text-align: left;
+        font-size: .7rem;
+        width: 30%;
+        z-index: 2;
+    }
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5rem;
+}
+
+.form-input {
+    width: 50rem;
+    border: 1px solid lightgray;
+    margin-bottom: 1rem;
+}
+
+form button {
+    width: 5rem;
+    border: 1px solid lightgray;
+    background-color: lightgreen;
+    font-size: 1.1rem;
+}
+
+form button:hover {
+    background-color: rgb(148, 145, 145);
+    color: white;
+}

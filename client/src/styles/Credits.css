@@ -1,0 +1,29 @@
+.full-cast-crew {
+    width: fit-content;
+    margin-left: 1rem;
+}
+
+.full-cast-crew h3:hover {
+    color: rgb(100, 97, 97);
+}
+
+.credits-crew {
+    display: flex;
+    gap: 10rem;
+    width: 50%;
+    margin-left: 5rem;
+    animation: fade-in 1.5s linear;
+    margin-top: 7rem;
+}
+
+.cast-member, .crew-member {
+    border: 5px solid white;
+    display: flex;
+    align-items: center;
+    gap: 3%;
+    width: 30rem;
+}
+
+.cast img, .crew img {
+    width: 5rem;
+}

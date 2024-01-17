@@ -1,0 +1,60 @@
+.people-container {
+    display: flex;
+    flex-direction: column;
+    animation: fade-in 1.5s linear;
+    margin-top: 7rem;
+}
+
+.heading {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.people {
+    width: 90%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 0 auto;
+}
+
+.people a {
+    color: black;
+}
+
+.people .person {
+    width: 18%;
+    padding-bottom: 1rem;
+}
+
+.people .person img {
+    width: 100%;
+}
+
+.people-container .next {
+    margin-top: 2rem;
+    margin-left: 2rem;
+}
+
+@media screen and (max-width: 500px) {
+    .people-container {
+        margin-top: 7rem;
+    }
+
+    .people {
+        width: 90%;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin: 0 auto;
+    }
+    
+    .people .person {
+        width: 45%;
+        padding-bottom: 1rem;
+    }
+    
+    .people .person img {
+        width: 100%;
+    }
+}

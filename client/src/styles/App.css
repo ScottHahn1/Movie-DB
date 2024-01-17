@@ -1,0 +1,182 @@
+* {
+  font-family: 'Roboto';
+}
+
+html {
+  height: 100%;
+}
+
+nav {
+  position: fixed;
+  top: 0 !important;
+}
+
+body {
+  margin: 0;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.app {
+  box-sizing: border-box;
+  height: 100%;
+}
+
+h1 {
+  font-family: 'Poppins';
+  font-size: 2.2rem;
+}
+
+h2 {
+  font-family: 'Poppins';
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.8rem;
+}
+
+h4 {
+  font-size: 1.3rem;
+}
+
+h5 {
+  font-size: 1.1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+}
+
+li {
+  list-style: none;
+  display: inline-block;
+  padding-right: 1rem;
+}
+
+button {
+  cursor: pointer;
+}
+
+.data-container {
+  width: 90%;
+  animation: fade-in 1.5s linear;
+  margin: 0 auto;
+  margin-top: 10%;
+}
+
+.heading-buttons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  width: 90%;
+}
+
+.heading-buttons button {
+  height: 50%;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.data {
+  width: 20%;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  animation: fade-in 1.5s linear;
+}
+
+.data > * {
+  margin: .5rem;
+}
+
+.data img {
+  width: 80%;
+  min-height: 75%;
+  max-height: 75%;
+  border-radius: 15px;
+}
+
+.register {
+  padding-top: 10rem;
+}
+
+.loading {
+  border: 5px solid #f3f3f3; 
+  border-top-color: lightgreen;
+  border-radius: 50%;
+  width: 5rem;
+  height: 5rem;
+  animation: spin 2s linear infinite;
+  margin: 2rem auto;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg) }
+  100% { transform: rotate(360deg) }
+}
+
+@media screen and (max-width: 500px) {
+  .app {
+    font-size: .8rem;
+  }
+
+  button {
+    font-size: .7rem;
+  }
+
+  h1 {
+    font-size: 1.2rem;
+  }
+  
+  h2 {
+    font-size: 1rem;
+  }
+  
+  h3 {
+    font-size: 1rem;
+  }
+  
+  h4 {
+    font-size: 1rem;
+  }
+  
+  h5 {
+    font-size: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .data-container {
+    margin-top: 7rem;
+  }
+
+  .data {
+    width: 50%;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    animation: fade-in 1.5s linear;
+  }
+}
+
+@media screen and (min-width: 1500px) {
+  * {
+    font-size: 1.1rem
+  }
+}
