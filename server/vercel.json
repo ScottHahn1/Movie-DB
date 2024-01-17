@@ -6,7 +6,10 @@
     "routes": [
         {
             "src": "/(.*)",
-            "dest": "server.ts"
+            "dest": "server.ts",
+            "headers":{
+                "Access-Control-Allow-Origin": "*"
+            }
         }
     ]
 }
