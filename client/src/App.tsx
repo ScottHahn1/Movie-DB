@@ -20,6 +20,7 @@ import TopRated from './pages/TopRated';
 import Upcoming from './pages/Upcoming';
 import Footer from "./components/Footer";
 import Latest from "./components/Latest";
+import axios from "axios";
 
 export type Clicked = {
   id?: string | number,
@@ -56,6 +57,8 @@ function App() {
   useEffect(() => {
     sessionStorage.setItem('searched', JSON.stringify(searched));
   }, [searched])
+
+  axios.defaults.withCredentials = true;
 
   return (
     <div className='app'>
