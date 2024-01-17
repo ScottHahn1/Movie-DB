@@ -17,7 +17,7 @@ const port = process.env.PORT || 8000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
-  origin: ["https://movie-db-omega-ten.vercel.app"],
+  origin: ["https://movie-db-frontend-psi.vercel.app"],
   methods: ["POST", "GET"],
   credentials: true
 }));
