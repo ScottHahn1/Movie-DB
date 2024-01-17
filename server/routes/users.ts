@@ -43,6 +43,8 @@ usersRouter.get('/:username', async (req, res) => {
 usersRouter.post('/register', (req, res) => {
     const sql = 'INSERT INTO users (username, password) VALUES (?, ?)';
     const { username, password } = req.body;
+
+    console.log(process.env.PORT);
     
     bcrypt.hash(password, salt, (err: any, hash: any) => {
         if (err) {
