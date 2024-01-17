@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import useAxios from './useAxios';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Clicked } from '../App';
+import axios from 'axios';
 
 type InitialState = {
     results: {
@@ -25,6 +26,8 @@ const Trending = ({ setClicked }: { setClicked: Dispatch<SetStateAction<Clicked>
     const { data, loading } = useAxios<InitialState, {page: number, mediaType: string}>('https://movie-db-omega-ten.vercel.app/movies/trending', {} as InitialState, { page: 1, mediaType: mediaType });
 
     const noImgFound = require('../assets/images/no-image-found.jpg');
+
+    axios.defaults.withCredentials = true;
 
     return (
         <div>

@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 import Latest from "../components/Latest";
+import axios from "axios";
 
 const Home = ({ searched, setSearched, setClicked }: { searched: string, setSearched: Dispatch<SetStateAction<string>>, setClicked: Dispatch<SetStateAction<Clicked>> }) => {
   const navigate = useNavigate();
@@ -14,6 +15,8 @@ const Home = ({ searched, setSearched, setClicked }: { searched: string, setSear
     setSearched('');
     setClicked({ type: '' });
   }, [])
+
+  axios.defaults.withCredentials = true;
 
   return (
     <div className='home'>

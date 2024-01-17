@@ -6,6 +6,8 @@ const useAxios = <S, T>(url: string, initialState: S, params: T, dependency?: nu
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
 
+    axios.defaults.withCredentials = true;
+
     useEffect(() => {
         if (url) {
             setLoading(true);
