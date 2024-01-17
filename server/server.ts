@@ -18,8 +18,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
   origin: ["https://movie-db-frontend-psi.vercel.app"],
-  methods: ["POST", "GET"],
-  credentials: true
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  methods: ["POST", "GET", "PUT", "DELETE"],
+  credentials: true,
+
 }));
 
 app.use('/users', usersRouter);
