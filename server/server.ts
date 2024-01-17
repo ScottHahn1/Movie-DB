@@ -12,7 +12,7 @@ import tvRouter from "./routes/tv";
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 3306;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -21,7 +21,6 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization'],
   methods: ["POST", "GET", "PUT", "DELETE"],
   credentials: true,
-
 }));
 
 app.use('/users', usersRouter);
