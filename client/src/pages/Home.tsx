@@ -43,7 +43,7 @@ const Home = ({ searched, setSearched, setClicked }: { searched: string, setSear
         </div>
       </div>
       <Trending setClicked={setClicked} />
-      <Latest url='http://localhost:8000/movies/latest' setClicked={setClicked} />
+      <Latest url='https://movie-db-omega-ten.vercel.app/movies/latest' setClicked={setClicked} />
     </div>
   )
 };

@@ -68,7 +68,7 @@ function App() {
           <Route index element={<Home searched={searched} setSearched={setSearched} setClicked={setClicked} />} />
           
           <Route path='/movies' element={ <Trending setClicked={setClicked} /> } />
-          <Route path='/movies' element={ <Latest url='http://localhost:8000/movies/latest' setClicked={setClicked} /> } />
+          <Route path='/movies' element={ <Latest url='https://movie-db-omega-ten.vercel.app/movies/latest' setClicked={setClicked} /> } />
           { clicked.id && clicked.type && <Route path='/details' element={ <Details clicked={clicked} setClicked={setClicked} /> } /> }
           { clicked.id && clicked.type === 'person' && <Route path='/person' element={ <Person clicked={clicked} setClicked={setClicked} /> } /> }
           { clicked.id && <Route path='/credits' element={ <Credits clicked={clicked} setClicked={setClicked} /> } /> }
