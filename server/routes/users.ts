@@ -49,6 +49,7 @@ usersRouter.post('/register', (req, res) => {
     bcrypt.hash(password, salt, (err: any, hash: any) => {
         if (err) {
             console.log(err);
+            res.send(err);
         } else {
             pool.query(sql, [username, hash], (err: any, result: any) => {
                 if (err) {
