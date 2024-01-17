@@ -37,8 +37,8 @@ const Details = ({ clicked, setClicked }: { clicked: Clicked, setClicked: Dispat
         sessionStorage.getItem('userId') && !detailsLoading && checkIfFavourited(details.id);
     }, [details])
 
-    const addMovieToFavourites = (mediaId: number, title: string, releaseDate: string, posterPath: string, voteAverage: number, overview: string, runtime?: number) => {
-        axios.post('http://localhost:8000/favourites/add', {
+    const addMovieToFavourites = async (mediaId: number, title: string, releaseDate: string, posterPath: string, voteAverage: number, overview: string, runtime?: number) => {
+        await axios.post('http://localhost:8000/favourites/add', {
             userId: sessionStorage.getItem('userId'),
             mediaId: mediaId,
             title: title,
