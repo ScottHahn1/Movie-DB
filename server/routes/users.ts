@@ -43,8 +43,6 @@ usersRouter.get('/:username', async (req, res) => {
 usersRouter.post('/register', (req, res) => {
     const sql = 'INSERT INTO users (username, password) VALUES (?, ?)';
     const { username, password } = req.body;
-
-    console.log(process.env.PORT);
     
     bcrypt.hash(password, salt, (err: any, hash: any) => {
         if (err) {
@@ -53,7 +51,7 @@ usersRouter.post('/register', (req, res) => {
         } else {
             pool.query(sql, [username, hash], (err: any, result: any) => {
                 if (err) {
-                    return res.json({ Message: 'Error signing up' })
+                    return res.send(err)
                 }
                 return res.json({ registered: true, result });
             })
