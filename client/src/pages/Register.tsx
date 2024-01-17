@@ -17,13 +17,16 @@ const Register = () => {
                 username: username,
                 password: password
             }).then(res => {
-                navigate('/login');
+                if (res.data.registered) {
+                    navigate('/login');
+                } else {
+                    alert('Register Failed');
+                }
             }).catch(err => {
                 console.log(err);
             })
         } else {
             setPasswordsMatch(false);
-            
         }
     }
 
