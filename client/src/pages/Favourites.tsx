@@ -19,7 +19,7 @@ type Movies = {
     overview: string,
     voteAverage: number,
     runtime: number,
-    media_type: string,
+    mediaType: string,
     name: string,
 }[]
 
@@ -33,18 +33,18 @@ const Favourites = ({ setClicked }: { setClicked: Dispatch<SetStateAction<Clicke
         userId: sessionStorage.getItem('userId')!,
         mediaType: mediaType
     }
-    const { data, loading } = useAxios<Movies, Params>(`https://movie-db-omega-ten.vercel.app/favourites`, {} as Movies, params, mediaType);
+    const { data, loading } = useAxios<Movies, Params>(`https://movie-db-omega-ten.vercel.app/favourites`, {} as Movies, params, mediaType, rerender);
 
     const navigate = useNavigate();
     
     const deleteFromFavourites = (id: number) => {
         axios.delete(`https://movie-db-omega-ten.vercel.app/favourites/delete/${id}`, { 
             params: { 
-                userId: sessionStorage.getItem('userId'),
-                mediaType: mediaType
+                userId: sessionStorage.getItem('userId')
             } 
         })
         .then(res => {
+            console.log(res);
             setRerender(!rerender);
         })
         .catch(err => {
@@ -56,7 +56,7 @@ const Favourites = ({ setClicked }: { setClicked: Dispatch<SetStateAction<Clicke
         <div>
             {
                 !loading && (
-                    <div className='favourites'>
+                    <div className={ data.length > 0 ? 'favourites-margin' : 'favourites' }>
                         <div className='heading-buttons'>
                             <h2>{ sessionStorage.getItem('username') }'s Favourites</h2>
                             <button style={{ backgroundColor: mediaType === 'movie' ? 'blue' : 'white' }} onClick={() => setMediaType('movie')}>Movies</button>
@@ -67,7 +67,7 @@ const Favourites = ({ setClicked }: { setClicked: Dispatch<SetStateAction<Clicke
                                 <div className='saved-movie'>
                                     <div>
                                         <img onClick={() => {
-                                                setClicked({ id: item.id, type: item.media_type });
+                                                setClicked({ id: item.mediaId, type: item.mediaType });
                                                 navigate('/details');
                                             }}  
                                             src={ item.posterPath ? `https://image.tmdb.org/t/p/w300/${item.posterPath}` : noImgFound } alt={item.title} 
@@ -79,7 +79,7 @@ const Favourites = ({ setClicked }: { setClicked: Dispatch<SetStateAction<Clicke
                                             <h4 
                                                 className='pointer'
                                                 onClick={() => {
-                                                    setClicked({ id: item.id, type: item.media_type });
+                                                    setClicked({ id: item.mediaId, type: item.mediaType });
                                                     navigate('/details');
                                                 }} 
                                                 >
@@ -102,9 +102,6 @@ const Favourites = ({ setClicked }: { setClicked: Dispatch<SetStateAction<Clicke
                                         <p>{ item.overview }</p>
 
                                         <div>
-                                            <div>
-                                                <p>Rating</p>
-                                            </div>
                                             <div className='pointer' onClick={() => deleteFromFavourites(item.id)}>
                                                 <p>Remove</p>
                                             </div>
