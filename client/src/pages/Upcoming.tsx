@@ -24,7 +24,7 @@ type InitialState = {
 const Upcoming = ({ setClicked }: { setClicked: Dispatch<SetStateAction<Clicked>> }) => {
     const [pageNum, setPageNum] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
-    const { data, loading } = useAxios<InitialState, {page: number}>('http://localhost:8000/movies/upcoming', {} as InitialState, { page: pageNum }, pageNum);
+    const { data, loading } = useAxios<InitialState, {page: number}>('https://movie-db-omega-ten.vercel.app/movies/upcoming', {} as InitialState, { page: pageNum }, pageNum);
 
     const noImgFound = require('../assets/images/no-image-found.jpg');
 

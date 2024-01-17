@@ -3,7 +3,7 @@ import { Clicked } from '../App';
 import { DetailsType } from "../typeAliases/Details";
 
 const Facts = ({ clicked }: { clicked: Clicked }) => {
-    const { data, loading } = useAxios<DetailsType, {}>(`http://localhost:8000/movies/details/${clicked.type}/${clicked.id}`, {} as DetailsType, {});
+    const { data, loading } = useAxios<DetailsType, {}>(`https://movie-db-omega-ten.vercel.app/movies/details/${clicked.type}/${clicked.id}`, {} as DetailsType, {});
 
     const noImgFound = require('../assets/images/no-image-found.jpg');
 

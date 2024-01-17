@@ -78,14 +78,14 @@ function App() {
           { sessionStorage.getItem('userId') && <Route path='/favourites' element={ <Favourites setClicked={setClicked} /> } /> }
           { sessionStorage.getItem('userId') && <Route path='/ratings' element={ <Ratings setClicked={setClicked} /> } /> }
 
-          <Route path='/popular/movies' element={ <Popular url='http://localhost:8000/movies/popular' mediaType='movie' setClicked={setClicked} /> } />
-          <Route path='/popular/tv' element={ <Popular url='http://localhost:8000/tv/popular' mediaType='tv' setClicked={setClicked} /> } />
+          <Route path='/popular/movies' element={ <Popular url='https://movie-db-omega-ten.vercel.app/movies/popular' mediaType='movie' setClicked={setClicked} /> } />
+          <Route path='/popular/tv' element={ <Popular url='https://movie-db-omega-ten.vercel.app/tv/popular' mediaType='tv' setClicked={setClicked} /> } />
 
-          <Route path='/nowPlaying/movies' element={ <NowPlaying url='http://localhost:8000/movies/nowPlaying' mediaType='movie' setClicked={setClicked} /> } />
-          <Route path='/nowPlaying/tv' element={ <NowPlaying url='http://localhost:8000/tv/onTheAir' mediaType='tv' setClicked={setClicked} /> } />
+          <Route path='/nowPlaying/movies' element={ <NowPlaying url='https://movie-db-omega-ten.vercel.app/movies/nowPlaying' mediaType='movie' setClicked={setClicked} /> } />
+          <Route path='/nowPlaying/tv' element={ <NowPlaying url='https://movie-db-omega-ten.vercel.app/tv/onTheAir' mediaType='tv' setClicked={setClicked} /> } />
 
-          <Route path='/topRated/movies' element={ <TopRated url='http://localhost:8000/movies/topRated' mediaType='movie' setClicked={setClicked} /> } />
-          <Route path='/topRated/tv' element={ <TopRated url='http://localhost:8000/tv/topRated' mediaType='tv' setClicked={setClicked} /> } />
+          <Route path='/topRated/movies' element={ <TopRated url='https://movie-db-omega-ten.vercel.app/movies/topRated' mediaType='movie' setClicked={setClicked} /> } />
+          <Route path='/topRated/tv' element={ <TopRated url='https://movie-db-omega-ten.vercel.app/tv/topRated' mediaType='tv' setClicked={setClicked} /> } />
 
           <Route path='/upcoming/movies' element={ <Upcoming setClicked={setClicked} /> } />
 

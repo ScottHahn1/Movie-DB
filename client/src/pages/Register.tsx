@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
     const [username, setUsername] = useState('');
@@ -13,7 +13,7 @@ const Register = () => {
     const signUp = (e: React.FormEvent<HTMLElement>) => {
         e.preventDefault();
         if (password === confirmPassword) {
-            axios.post('http://localhost:8000/users/register', {
+            axios.post('https://movie-db-omega-ten.vercel.app/users/register', {
                 username: username,
                 password: password
             }).then(res => {

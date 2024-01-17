@@ -19,7 +19,7 @@ export const Rate = ({ id, title, media_type, release_date, poster_path, vote_av
     const [newRating, setNewRating] = useState<number | null>(null);
 
     const addMovieRating = (mediaId: number, title: string, mediaType: string, releaseDate: string, posterPath: string, voteAverage: number, overview: string, runtime: number, rating: number) => {
-        axios.post(`http://localhost:8000/ratings/add`, {
+        axios.post(`https://movie-db-omega-ten.vercel.app/ratings/add`, {
             userId: sessionStorage.getItem('userId'),
             mediaId: mediaId,
             mediaType: mediaType,
@@ -38,7 +38,7 @@ export const Rate = ({ id, title, media_type, release_date, poster_path, vote_av
     }
 
     const getRating = () => {
-        axios.get(`http://localhost:8000/ratings/${id}`, {
+        axios.get(`https://movie-db-omega-ten.vercel.app/ratings/${id}`, {
             params: { userId: sessionStorage.getItem('userId') }
         })
         .then(res => {
@@ -52,7 +52,7 @@ export const Rate = ({ id, title, media_type, release_date, poster_path, vote_av
     const updateRating = (newRating: number) => {
         axios({
             method: 'PUT',
-            url: `http://localhost:8000/ratings/update/${id}`,
+            url: `https://movie-db-omega-ten.vercel.app/ratings/update/${id}`,
             params: { 
                 userId: sessionStorage.getItem('userId'),
                 rating: newRating

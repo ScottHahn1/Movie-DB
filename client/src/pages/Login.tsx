@@ -10,7 +10,7 @@ const Login = () => {
 
     const login = (e: React.MouseEvent<HTMLFormElement>) => {
         e.preventDefault();
-        axios.post('http://localhost:8000/users/login', {
+        axios.post('https://movie-db-omega-ten.vercel.app/users/login', {
             username: username,
             password: password
         })

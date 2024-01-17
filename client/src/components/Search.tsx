@@ -58,9 +58,9 @@ const Search = ({ clicked, setClicked, searched }: { clicked: Clicked, setClicke
         page: pageNum
     };
 
-    const { data: moviesData } = useAxios<InitialData, Params>(`http://localhost:8000/search/movies`, {} as InitialData, params, pageNum);
-    const { data: showsData } = useAxios<InitialData, Params>(`http://localhost:8000/search/shows`, {} as InitialData, params, pageNum);
-    const { data: peopleData } = useAxios<InitialData, Params>(`http://localhost:8000/search/people`, {} as InitialData, params, pageNum);
+    const { data: moviesData } = useAxios<InitialData, Params>(`https://movie-db-omega-ten.vercel.app/search/movies`, {} as InitialData, params, pageNum);
+    const { data: showsData } = useAxios<InitialData, Params>(`https://movie-db-omega-ten.vercel.app/search/shows`, {} as InitialData, params, pageNum);
+    const { data: peopleData } = useAxios<InitialData, Params>(`https://movie-db-omega-ten.vercel.app/search/people`, {} as InitialData, params, pageNum);
     
     useEffect(() => {
         Object.keys(moviesData).length && setMovies(moviesData.results);

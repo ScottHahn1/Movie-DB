@@ -26,7 +26,7 @@ type People = {
 
 const People = ({ setClicked }: { setClicked: Dispatch<SetStateAction<Clicked>> }) => {
     const [pageNum, setPageNum] = useState(1);
-    const { data: people, loading, error } = useAxios<People, { page: number }>('http://localhost:8000/people/popular', {} as People, {page: pageNum}, pageNum);
+    const { data: people, loading, error } = useAxios<People, { page: number }>('https://movie-db-omega-ten.vercel.app/people/popular', {} as People, {page: pageNum}, pageNum);
     const [totalPages, setTotalPages] = useState(0);
 
     const noImgFound = require('../assets/images/no-image-found.jpg');

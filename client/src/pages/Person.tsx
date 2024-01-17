@@ -6,8 +6,8 @@ import { Credits, Details } from "../typeAliases/Person";
 import { useNavigate } from "react-router-dom";
 
 const Person = ({ clicked, setClicked }: { clicked: Clicked, setClicked: Dispatch<SetStateAction<Clicked>> }) => {
-    const { data: person, loading: personLoading } = useAxios<Details, {}>(`http://localhost:8000/people/${clicked.id}`, {} as Details, {});
-    const { data: credits, loading: creditsLoading } = useAxios<Credits, {}>(`http://localhost:8000/people/credits/${clicked.id}`, {} as Credits, {});
+    const { data: person, loading: personLoading } = useAxios<Details, {}>(`https://movie-db-omega-ten.vercel.app/people/${clicked.id}`, {} as Details, {});
+    const { data: credits, loading: creditsLoading } = useAxios<Credits, {}>(`https://movie-db-omega-ten.vercel.app/people/credits/${clicked.id}`, {} as Credits, {});
 
     const navigate = useNavigate();
     const noImgFound = require('../assets/images/no-image-found.jpg');

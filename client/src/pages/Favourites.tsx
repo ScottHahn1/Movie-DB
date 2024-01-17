@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import useAxios from "../components/useAxios";
 import '../styles/Favourites.css';
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { Clicked } from "../App";
 import axios from "axios";
 
@@ -33,12 +33,12 @@ const Favourites = ({ setClicked }: { setClicked: Dispatch<SetStateAction<Clicke
         userId: sessionStorage.getItem('userId')!,
         mediaType: mediaType
     }
-    const { data, loading } = useAxios<Movies, Params>(`http://localhost:8000/favourites`, {} as Movies, params, mediaType);
+    const { data, loading } = useAxios<Movies, Params>(`https://movie-db-omega-ten.vercel.app/favourites`, {} as Movies, params, mediaType);
 
     const navigate = useNavigate();
     
     const deleteFromFavourites = (id: number) => {
-        axios.delete(`http://localhost:8000/favourites/delete/${id}`, { 
+        axios.delete(`https://movie-db-omega-ten.vercel.app/favourites/delete/${id}`, { 
             params: { 
                 userId: sessionStorage.getItem('userId'),
                 mediaType: mediaType

@@ -5,7 +5,7 @@ import { Dispatch, SetStateAction } from "react";
 import { Clicked } from '../App';
 
 const Cast = ({ clicked, setClicked }: { clicked: Clicked, setClicked: Dispatch<SetStateAction<Clicked>> }) => {
-    const { data: credits, loading } = useAxios<CreditsType, {}>(`http://localhost:8000/movies/credits/${clicked.type}/${clicked.id}`, {} as CreditsType, {});
+    const { data: credits, loading } = useAxios<CreditsType, {}>(`https://movie-db-omega-ten.vercel.app/movies/credits/${clicked.type}/${clicked.id}`, {} as CreditsType, {});
 
     const noImgFound = require('../assets/images/no-image-found.jpg');
 

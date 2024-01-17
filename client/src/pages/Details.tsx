@@ -11,8 +11,8 @@ import Cast from '../components/Cast';
 import Facts from '../components/Facts';
 
 const Details = ({ clicked, setClicked }: { clicked: Clicked, setClicked: Dispatch<SetStateAction<Clicked>> }) => {
-    const { data: details, loading: detailsLoading } = useAxios<DetailsType, {}>(`http://localhost:8000/movies/details/${clicked.type}/${clicked.id}`, {} as DetailsType, {});
-    const { data: credits, loading: creditsLoading } = useAxios<CreditsType, {}>(`http://localhost:8000/movies/credits/${clicked.type}/${clicked.id}`, {} as CreditsType, {});
+    const { data: details, loading: detailsLoading } = useAxios<DetailsType, {}>(`https://movie-db-omega-ten.vercel.app/movies/details/${clicked.type}/${clicked.id}`, {} as DetailsType, {});
+    const { data: credits, loading: creditsLoading } = useAxios<CreditsType, {}>(`https://movie-db-omega-ten.vercel.app/movies/credits/${clicked.type}/${clicked.id}`, {} as CreditsType, {});
 
     const [showRatingsBar, setShowRatingsBar] = useState(false);
     const [showFavouritesTooltip, setShowFavouritesTooltip] = useState(false);
@@ -24,7 +24,7 @@ const Details = ({ clicked, setClicked }: { clicked: Clicked, setClicked: Dispat
     const noImgFound = require('../assets/images/no-image-found.jpg');
 
     const checkIfFavourited = (mediaId: number) => {
-        axios.get(`http://localhost:8000/favourites/${sessionStorage.getItem('userId')}/${mediaId}`, {
+        axios.get(`https://movie-db-omega-ten.vercel.app/favourites/${sessionStorage.getItem('userId')}/${mediaId}`, {
             params: { mediaType: clicked.type }
         })
         .then(res => {
@@ -38,7 +38,7 @@ const Details = ({ clicked, setClicked }: { clicked: Clicked, setClicked: Dispat
     }, [details])
 
     const addMovieToFavourites = async (mediaId: number, title: string, releaseDate: string, posterPath: string, voteAverage: number, overview: string, runtime?: number) => {
-        await axios.post('http://localhost:8000/favourites/add', {
+        await axios.post('https://movie-db-omega-ten.vercel.app/favourites/add', {
             userId: sessionStorage.getItem('userId'),
             mediaId: mediaId,
             title: title,
@@ -75,7 +75,7 @@ const Details = ({ clicked, setClicked }: { clicked: Clicked, setClicked: Dispat
     }
 
     const deleteMovie = (id: number) => {
-        axios.delete(`http://localhost:8000/favourites/delete/${id}`, { 
+        axios.delete(`https://movie-db-omega-ten.vercel.app/favourites/delete/${id}`, { 
             params: { userId: sessionStorage.getItem('userId') } 
         })
         .then(res => {
