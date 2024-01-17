@@ -22,6 +22,7 @@ const Register = () => {
                 } else {
                     alert('Register Failed');
                 }
+                console.log(res)
             }).catch(err => {
                 console.log(err);
             })
