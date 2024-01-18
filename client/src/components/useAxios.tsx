@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios, { AxiosHeaders } from 'axios';
 
-const useAxios = <S, T>(url: string, initialState: S, params: T, dependency?: number | string, headers?: AxiosHeaders) => {
+const useAxios = <S, T>(url: string, initialState: S, params: T, dependency?: number | string, secondDependency?: boolean, headers?: AxiosHeaders) => {
     const [data, setData] = useState<S>(initialState);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
@@ -25,7 +25,7 @@ const useAxios = <S, T>(url: string, initialState: S, params: T, dependency?: nu
                 setError(true);
             });
         }
-    }, [url, dependency])
+    }, [url, dependency, secondDependency])
 
     return { data, loading, error };
 }
