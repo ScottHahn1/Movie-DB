@@ -79,7 +79,7 @@ favouritesRouter.post('/add', (req, res) => {
 
 //delete movie 
 favouritesRouter.delete('/delete/:id', (req, res) => {
-    const sql = 'DELETE FROM favourites WHERE userId = ? AND mediaId = ?'
+    const sql = 'DELETE FROM favourites WHERE userId = ? AND id = ?'
 
     pool.getConnection((err: any, connection: any) => {
         if (err) {
