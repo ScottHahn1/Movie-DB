@@ -58,7 +58,7 @@ function App() {
     sessionStorage.setItem('searched', JSON.stringify(searched));
   }, [searched])
 
-  axios.defaults.withCredentials = true;
+  // axios.defaults.withCredentials = true;
 
   return (
     <div className='app'>
@@ -67,10 +67,10 @@ function App() {
         <Routes>
           <Route path='/register' element={ <Register /> } />
           <Route path='/login' element={ <Login /> } />
-
+      
           <Route index element={<Home searched={searched} setSearched={setSearched} setClicked={setClicked} />} />
           
-          <Route path='/movies' element={ <Trending setClicked={setClicked} /> } />
+          <Route path='/movies' element={ <Trending url='https://movie-db-omega-ten.vercel.app/movies/trending' setClicked={setClicked} /> } />
           <Route path='/movies' element={ <Latest url='https://movie-db-omega-ten.vercel.app/movies/latest' setClicked={setClicked} /> } />
           { clicked.id && clicked.type && <Route path='/details' element={ <Details clicked={clicked} setClicked={setClicked} /> } /> }
           { clicked.id && clicked.type === 'person' && <Route path='/person' element={ <Person clicked={clicked} setClicked={setClicked} /> } /> }
@@ -89,7 +89,7 @@ function App() {
 
           <Route path='/topRated/movies' element={ <TopRated url='https://movie-db-omega-ten.vercel.app/movies/topRated' mediaType='movie' setClicked={setClicked} /> } />
           <Route path='/topRated/tv' element={ <TopRated url='https://movie-db-omega-ten.vercel.app/tv/topRated' mediaType='tv' setClicked={setClicked} /> } />
-
+          
           <Route path='/upcoming/movies' element={ <Upcoming setClicked={setClicked} /> } />
 
           <Route path='*' element={<NoPage />} />
