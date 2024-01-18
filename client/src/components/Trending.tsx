@@ -21,13 +21,11 @@ type InitialState = {
     }[]
 }
 
-const Trending = ({ setClicked }: { setClicked: Dispatch<SetStateAction<Clicked>> }) => {
+const Trending = ({ url, setClicked }: { url: string, setClicked: Dispatch<SetStateAction<Clicked>> }) => {
     const [mediaType, setMediaType] = useState('movie');
-    const { data, loading } = useAxios<InitialState, {page: number, mediaType: string}>('https://movie-db-omega-ten.vercel.app/movies/trending', {} as InitialState, { page: 1, mediaType: mediaType });
+    const { data, loading } = useAxios<InitialState, {page: number, mediaType: string}>(url, {} as InitialState, { page: 1, mediaType: mediaType }, mediaType);
 
     const noImgFound = require('../assets/images/no-image-found.jpg');
-
-    axios.defaults.withCredentials = true;
 
     return (
         <div>
