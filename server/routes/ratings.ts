@@ -96,4 +96,28 @@ ratingsRouter.put('/update/:id', (req, res) => {
     })
 })
 
+ratingsRouter.delete('/delete/:id', (req, res) => {
+    const sql = 'DELETE FROM ratings WHERE userId = ? AND id = ?'
+
+    pool.getConnection((err: any, connection: any) => {
+        if (err) {
+            console.log(err);
+            return;
+        } 
+
+        connection.query(sql, [req.query.userId, req.params.id], (err: any, rows: any) => {
+            if (err) {
+                console.log(err);
+                return;
+            }
+
+            res.send({
+                data: rows
+            })
+
+            connection.release();
+        })
+    })
+})
+
 export default ratingsRouter;
