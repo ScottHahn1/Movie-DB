@@ -16,8 +16,6 @@ const Home = ({ searched, setSearched, setClicked }: { searched: string, setSear
     setClicked({ type: '' });
   }, [])
 
-  axios.defaults.withCredentials = true;
-
   return (
     <div className='home'>
       <div className='main-heading'>
@@ -45,7 +43,7 @@ const Home = ({ searched, setSearched, setClicked }: { searched: string, setSear
           </Link>
         </div>
       </div>
-      <Trending setClicked={setClicked} />
+      <Trending url='https://movie-db-omega-ten.vercel.app/movies/trending' setClicked={setClicked} />
       <Latest url='https://movie-db-omega-ten.vercel.app/movies/latest' setClicked={setClicked} />
     </div>
   )
