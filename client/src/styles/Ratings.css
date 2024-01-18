@@ -1,3 +1,8 @@
 .star {
     color: gold;
 }
+
+.ratings-bar {
+    width: 30rem;
+    background-color: black;
+}
