@@ -84,6 +84,7 @@ form {
     width: 50rem;
     border: 1px solid lightgray;
     margin-bottom: 1rem;
+    font-size: 1.1rem;
 }
 
 form button {
