@@ -32,7 +32,9 @@ const Register = () => {
     }
 
     return (
-        <div className='register'>
+        <div className='register-login'>
+            <h2>Register</h2>
+
             <form onSubmit={signUp}>
                 <label> Username <br></br>
                     <input className='form-input' type='text' value={username} onChange={ e => setUsername(e.target.value) } />
