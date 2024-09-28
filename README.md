@@ -10,7 +10,7 @@ This webstite includes a register/login system made with Express and MySQL. Sign
 - Home page with trending, and latest movies. (Can be switched to tv shows with the click of a button).
 - Seperate pages for movies tv shows, and people. These pages contain sort functionality.
 - Sort functions include - popular, now showing, top rated, and upcoming.
-- Register/sign in system.
+- Register/login in system.
 - Signed in users can rate and save movies and tv shows to the favourited list.
 - Passwords are hashed with Bcrypt.
 
