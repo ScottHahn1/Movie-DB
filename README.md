@@ -28,9 +28,10 @@ Go to the project directory
   cd Movie-DB
 ```
 
-Install dependencies
+Install client-side dependencies
 
 ```bash
+  cd client
   npm install
 ```
 
@@ -38,6 +39,12 @@ Start the frontend server
 
 ```bash
   npm start
+```
+
+Install server-side dependencies
+```bash
+  cd server
+  npm install
 ```
 
 Start the backend server
