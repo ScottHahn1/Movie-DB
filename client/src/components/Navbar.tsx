@@ -1,7 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import Login from '../pages/Login';
 import '../styles/Navbar.css';
-import Search from './Search';
 import Dropdown from './Dropdown';
 import { useState } from 'react';
 

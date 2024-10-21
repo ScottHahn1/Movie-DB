@@ -74,13 +74,30 @@ button {
 .heading-buttons {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: .8rem;
   margin-top: 2rem;
   width: 90%;
 }
 
 .heading-buttons button {
-  height: 50%;
+  border-radius: 1rem;
+  border: 2px solid black;
+  font-size: 1.1rem;
+  padding: 3px 1rem;
+  transition: background-color 1s, box-shadow .5s;
+}
+
+.heading-buttons button:hover {
+  box-shadow: 2px 4px black;
+}
+
+@keyframes scale-button {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.05);
+  }
 }
 
 .pointer {

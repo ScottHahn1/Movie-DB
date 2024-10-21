@@ -1,8 +1,7 @@
 import { Link } from 'react-router-dom';
 import useAxios from './useAxios';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { Clicked } from '../App';
-import axios from 'axios';
 
 type InitialState = {
     results: {
@@ -47,6 +46,7 @@ const Trending = ({ url, setClicked }: { url: string, setClicked: Dispatch<SetSt
                                         <img 
                                             src={ movie.poster_path ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}` : noImgFound } 
                                             onClick={() => setClicked({ id: movie.id, type: 'movie' })}
+                                            alt={movie.title}
                                         />
                                     </Link>
                                     <h5>{ movie.title }</h5>
@@ -60,6 +60,7 @@ const Trending = ({ url, setClicked }: { url: string, setClicked: Dispatch<SetSt
                                         <img 
                                             src={ show.poster_path ? `https://image.tmdb.org/t/p/w500/${show.poster_path}` : noImgFound } 
                                             onClick={() => setClicked({ id: show.id, type: 'tv' })}
+                                            alt={show.title}
                                         />
                                     </Link>
                                     <h5>{ show.name }</h5>

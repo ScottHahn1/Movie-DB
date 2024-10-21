@@ -33,9 +33,22 @@ nav li {
 }
 
 .login-register {
-    width: 10rem;
     display: flex;
+    gap: .5rem;
     justify-content: space-around;
+}
+
+.login-register button {
+    border-radius: 1rem;
+    border: none;
+    font-size: 1.1rem;
+    padding: 3px 1rem;
+    transition: background-color 1s, box-shadow .5s;
+}
+
+.login-register button:hover {
+    background-color: lightgreen;
+    box-shadow: white 2px 4px 2px;
 }
 
 .profile {
