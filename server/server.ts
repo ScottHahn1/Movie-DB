@@ -17,9 +17,9 @@ const port = process.env.PORT;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
-  origin: ["https://movie-db-frontend-psi.vercel.app"],
+  origin: ['https://movie-db-frontend-psi.vercel.app', 'http://localhost:3000'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  methods: ["POST", "GET", "PUT", "DELETE"],
+  methods: ['POST', 'GET', 'PUT', 'DELETE'],
   credentials: true,
 }));
 
