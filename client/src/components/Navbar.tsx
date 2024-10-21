@@ -1,12 +1,9 @@
 import { Link, useNavigate } from 'react-router-dom';
 import '../styles/Navbar.css';
-import Dropdown from './Dropdown';
 import { useState } from 'react';
+import NavLinks from './NavLinks';
 
 const Navbar = () => {
-  const [moviesDropdownVisible, setMoviesDropdownVisible] = useState(false);
-  const [showsDropdownVisible, setShowsDropdownVisible] = useState(false);
-  const [peopleDropdownVisible, setPeopleDropdownVisible] = useState(false);
   const [profileDropdownVisible, setProfileDropdownVisible] = useState(false);
 
   const navigate = useNavigate();
@@ -21,38 +18,7 @@ const Navbar = () => {
                 <Link to='/'>Home</Link>
             </li>
 
-            <li onMouseEnter={() => setMoviesDropdownVisible(true)} onMouseLeave={() => setMoviesDropdownVisible(false)}>
-                <span style={{ color: 'white' }}>Movies</span>
-                {
-                  moviesDropdownVisible && (
-                    <>
-                      <Dropdown itemOne='Popular' itemTwo='Now Showing' itemThree='Top Rated' itemFour='Upcoming' linkTo='movies' />
-                    </>
-                  )
-                }
-            </li>
-
-            <li onMouseEnter={() => setShowsDropdownVisible(true)} onMouseLeave={() => setShowsDropdownVisible(false)}>
-                <span style={{ color: 'white' }}>TV Shows</span>
-                {
-                  showsDropdownVisible && (
-                    <>
-                      <Dropdown itemOne='Popular' itemTwo='Now Showing' itemThree='Top Rated' linkTo='tv' />
-                    </>
-                  )
-                }
-            </li>
-
-            <li onMouseEnter={() => setPeopleDropdownVisible(true)} onMouseLeave={() => setPeopleDropdownVisible(false)}>
-              <span style={{ color: 'white' }}>People</span>
-                {
-                  peopleDropdownVisible && (
-                    <>
-                      <Dropdown itemOne='Popular' linkTo='people' />
-                    </>
-                  )
-                }
-            </li>
+            <NavLinks />
         </ul>
 
         <div className='login-register'>
@@ -64,12 +30,12 @@ const Navbar = () => {
 
           {
             sessionStorage.getItem('token') && (
-              <div onMouseEnter={() => setProfileDropdownVisible(true)} className='profile'>
-                { sessionStorage.getItem('username')?.slice(0, 1) }
+              <div onMouseEnter={() => setProfileDropdownVisible(true)} className='profile' onMouseLeave={() => setProfileDropdownVisible(false)}>
+                { sessionStorage.getItem('username')?.slice(0, 1).toUpperCase() }
 
                 {
                   profileDropdownVisible && (
-                    <div className='profile-dropdown' onMouseLeave={() => setProfileDropdownVisible(false)}>
+                    <div className='profile-dropdown'>
                       <p onClick={() => navigate('/favourites')}>Favourites</p>
                       <p onClick={() => navigate('/ratings')}>Ratings</p>
                     </div>
