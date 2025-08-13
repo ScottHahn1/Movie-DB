@@ -11,6 +11,20 @@
     margin-left: 50%;
 }
 
+.pages {
+    display: flex;
+}
+
+.more-pages {
+    display: flex;
+    gap: 1rem;
+    padding: 0 .3rem;
+}
+
+.active-page {
+    border-bottom: 2px solid red;
+}
+
 .search-results {
     width: 15rem;
     display: flex;
