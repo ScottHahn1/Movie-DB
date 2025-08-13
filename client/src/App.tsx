@@ -4,7 +4,7 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Trending from "./components/Trending";
 import Details from "./pages/Details";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Person from "./pages/Person";
 import Credits from "./pages/Credits";
 import People from "./pages/People";
@@ -20,7 +20,6 @@ import TopRated from './pages/TopRated';
 import Upcoming from './pages/Upcoming';
 import Footer from "./components/Footer";
 import Latest from "./components/Latest";
-import axios from "axios";
 
 export type Clicked = {
   id?: string | number,
@@ -29,36 +28,7 @@ export type Clicked = {
 }
 
 function App() {
-  const [clicked, setClicked] = useState<Clicked>({} as Clicked);
-  const [searched, setSearched] = useState(sessionStorage.getItem('searched') as string);
-
-  //clicked storage
-  let storedClickd = sessionStorage.getItem('clicked');
-
-  useEffect(() => {
-    if (storedClickd) {
-      setClicked(JSON.parse(storedClickd));
-    }
-  }, [])
-
-  useEffect(() => {
-    sessionStorage.setItem('clicked', JSON.stringify(clicked));
-  }, [clicked])
-
-  //searched storage
-  let storedSearch = sessionStorage.getItem('searched');
-
-  useEffect(() => {
-    if (storedSearch) {
-      setSearched(JSON.parse(storedSearch));
-    }
-  }, [])
-
-  useEffect(() => {
-    sessionStorage.setItem('searched', JSON.stringify(searched));
-  }, [searched])
-
-  // axios.defaults.withCredentials = true;
+  const [searched, setSearched] = useState('');
 
   return (
     <div className='app'>
@@ -68,7 +38,10 @@ function App() {
           <Route path='/register' element={ <Register /> } />
           <Route path='/login' element={ <Login /> } />
       
-          <Route index element={<Home searched={searched} setSearched={setSearched} setClicked={setClicked} />} />
+          <Route 
+            index
+            element={<Home searched={searched} setSearched={setSearched} />} 
+          />
           
           <Route path='/movies' element={ <Trending url='https://movie-db-omega-ten.vercel.app/movies/trending' setClicked={setClicked} /> } />
           <Route path='/movies' element={ <Latest url='https://movie-db-omega-ten.vercel.app/movies/latest' setClicked={setClicked} /> } />
@@ -76,7 +49,7 @@ function App() {
           { clicked.id && clicked.type === 'person' && <Route path='/person' element={ <Person clicked={clicked} setClicked={setClicked} /> } /> }
           { clicked.id && <Route path='/credits' element={ <Credits clicked={clicked} setClicked={setClicked} /> } /> }
           <Route path='/popular/people' element={ <People setClicked={setClicked} /> } /> 
-          <Route path='/search' element={ <Search clicked={clicked} setClicked={setClicked} searched={searched} /> } />
+          <Route path='/search/:query' element={ <Search /> } />
 
           { sessionStorage.getItem('userId') && <Route path='/favourites' element={ <Favourites setClicked={setClicked} /> } /> }
           { sessionStorage.getItem('userId') && <Route path='/ratings' element={ <Ratings setClicked={setClicked} /> } /> }
