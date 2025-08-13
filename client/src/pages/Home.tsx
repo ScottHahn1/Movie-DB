@@ -1,20 +1,17 @@
 import { Dispatch, SetStateAction, useEffect } from "react";
 import Trending from "../components/Trending";
-import { Clicked } from "../App";
 import '../styles/Home.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 import Latest from "../components/Latest";
-import axios from "axios";
 
-const Home = ({ searched, setSearched, setClicked }: { searched: string, setSearched: Dispatch<SetStateAction<string>>, setClicked: Dispatch<SetStateAction<Clicked>> }) => {
+const Home = ({ searched, setSearched }: { searched: string, setSearched: Dispatch<SetStateAction<string>> }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
     setSearched('');
-    setClicked({ type: '' });
-  }, [])
+  }, [setSearched])
 
   return (
     <div className='home'>
@@ -29,22 +26,20 @@ const Home = ({ searched, setSearched, setClicked }: { searched: string, setSear
             value={searched ? searched : ''} 
             onKeyDown={e => {
               if (e.key === 'Enter') {
-                setClicked({ type: 'movie' })
-                navigate('/search');
+                navigate(`/search/${searched}`);
               }
             }}
           />
           <Link to='/search'>
             <FontAwesomeIcon 
               icon={faMagnifyingGlass} 
-              onClick={() => setClicked({ type: 'movie' })} 
               className='search-icon'
             />
           </Link>
         </div>
       </div>
-      <Trending url='https://movie-db-omega-ten.vercel.app/movies/trending' setClicked={setClicked} />
-      <Latest url='https://movie-db-omega-ten.vercel.app/movies/latest' setClicked={setClicked} />
+      <Trending url='https://movie-db-omega-ten.vercel.app/movies/trending' />
+      <Latest url='https://movie-db-omega-ten.vercel.app/movies/latest' />
     </div>
   )
 };
