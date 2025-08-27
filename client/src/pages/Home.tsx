@@ -26,7 +26,7 @@ const Home = ({ searched, setSearched }: { searched: string, setSearched: Dispat
             value={searched ? searched : ''} 
             onKeyDown={e => {
               if (e.key === 'Enter') {
-                navigate(`/search/${searched}`);
+                navigate(`/search/${searched.replace(/\s+/g, '-')}`);
               }
             }}
           />
