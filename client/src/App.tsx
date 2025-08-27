@@ -43,27 +43,27 @@ function App() {
             element={<Home searched={searched} setSearched={setSearched} />} 
           />
           
-          <Route path='/movies' element={ <Trending url='https://movie-db-omega-ten.vercel.app/movies/trending' setClicked={setClicked} /> } />
-          <Route path='/movies' element={ <Latest url='https://movie-db-omega-ten.vercel.app/movies/latest' setClicked={setClicked} /> } />
-          { clicked.id && clicked.type && <Route path='/details' element={ <Details clicked={clicked} setClicked={setClicked} /> } /> }
-          { clicked.id && clicked.type === 'person' && <Route path='/person' element={ <Person clicked={clicked} setClicked={setClicked} /> } /> }
-          { clicked.id && <Route path='/credits' element={ <Credits clicked={clicked} setClicked={setClicked} /> } /> }
-          <Route path='/popular/people' element={ <People setClicked={setClicked} /> } /> 
+          <Route path='/movies' element={ <Trending url='https://movie-db-omega-ten.vercel.app/movies/trending' /> } />
+          <Route path='/movies' element={ <Latest url='https://movie-db-omega-ten.vercel.app/movies/latest' /> } />
+          <Route path='/details/:type/:id/:title' element={ <Details /> } />
+          <Route path='/person/:id/:name' element={ <Person /> } /> 
+          <Route path='/credits/:type/:id' element={ <Credits /> } /> 
+          <Route path='/popular/people' element={ <People /> } /> 
           <Route path='/search/:query' element={ <Search /> } />
 
-          { sessionStorage.getItem('userId') && <Route path='/favourites' element={ <Favourites setClicked={setClicked} /> } /> }
-          { sessionStorage.getItem('userId') && <Route path='/ratings' element={ <Ratings setClicked={setClicked} /> } /> }
+          { sessionStorage.getItem('userId') && <Route path='/favourites' element={ <Favourites /> } /> }
+          { sessionStorage.getItem('userId') && <Route path='/ratings' element={ <Ratings /> } /> }
 
-          <Route path='/popular/movies' element={ <Popular url='https://movie-db-omega-ten.vercel.app/movies/popular' mediaType='movie' setClicked={setClicked} /> } />
-          <Route path='/popular/tv' element={ <Popular url='https://movie-db-omega-ten.vercel.app/tv/popular' mediaType='tv' setClicked={setClicked} /> } />
+          <Route path='/popular/movies' element={ <Popular url='https://movie-db-omega-ten.vercel.app/movies/popular' mediaType='movie' /> } />
+          <Route path='/popular/tv' element={ <Popular url='https://movie-db-omega-ten.vercel.app/tv/popular' mediaType='tv' /> } />
 
-          <Route path='/nowPlaying/movies' element={ <NowPlaying url='https://movie-db-omega-ten.vercel.app/movies/nowPlaying' mediaType='movie' setClicked={setClicked} /> } />
-          <Route path='/nowPlaying/tv' element={ <NowPlaying url='https://movie-db-omega-ten.vercel.app/tv/onTheAir' mediaType='tv' setClicked={setClicked} /> } />
+          <Route path='/nowPlaying/movies' element={ <NowPlaying url='https://movie-db-omega-ten.vercel.app/movies/nowPlaying' mediaType='movie' /> } />
+          <Route path='/nowPlaying/tv' element={ <NowPlaying url='https://movie-db-omega-ten.vercel.app/tv/onTheAir' mediaType='tv' /> } />
 
-          <Route path='/topRated/movies' element={ <TopRated url='https://movie-db-omega-ten.vercel.app/movies/topRated' mediaType='movie' setClicked={setClicked} /> } />
-          <Route path='/topRated/tv' element={ <TopRated url='https://movie-db-omega-ten.vercel.app/tv/topRated' mediaType='tv' setClicked={setClicked} /> } />
+          <Route path='/topRated/movies' element={ <TopRated url='https://movie-db-omega-ten.vercel.app/movies/topRated' mediaType='movie' /> } />
+          <Route path='/topRated/tv' element={ <TopRated url='https://movie-db-omega-ten.vercel.app/tv/topRated' mediaType='tv' /> } />
           
-          <Route path='/upcoming/movies' element={ <Upcoming setClicked={setClicked} /> } />
+          <Route path='/upcoming/movies' element={ <Upcoming /> } />
 
           <Route path='*' element={<NoPage />} />
         </Routes>
