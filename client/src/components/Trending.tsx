@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import useAxios from './useAxios';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 type InitialState = {
     results: {
@@ -19,11 +19,26 @@ type InitialState = {
     }[]
 }
 
-const Trending = ({ url }: { url: string }) => {
+type Props = {
+    setTrendingLoading: Dispatch<SetStateAction<boolean>>
+}
+
+const Trending = ({ setTrendingLoading }: Props) => {
     const [mediaType, setMediaType] = useState('movie');
-    const { data, loading } = useAxios<InitialState, {page: number, mediaType: string}>(url, {} as InitialState, { page: 1, mediaType: mediaType }, mediaType);
+
+    const { data: trending, loading } = useAxios<InitialState, { page: number, mediaType: string }>(
+        'https://movie-db-omega-ten.vercel.app/movies/trending', 
+        {} as InitialState, 
+        { page: 1, mediaType: mediaType }
+    );
 
     const noImgFound = require('../assets/images/no-image-found.jpg');
+
+    useEffect(() => {
+        if (!loading) {
+            setTrendingLoading(true);
+        }
+    }, [loading, setTrendingLoading])
 
     if (loading) {
         return <div className='loading' />
@@ -35,11 +50,17 @@ const Trending = ({ url }: { url: string }) => {
                 <div className='heading-buttons'>
                     <h2>Trending</h2>
 
-                    <button style={{ backgroundColor: mediaType === 'movie' ? 'rgb(142, 233, 142)' : 'white' }} onClick={() => setMediaType('movie')}>
+                    <button 
+                        style={{ backgroundColor: mediaType === 'movie' ? 'rgb(142, 233, 142)' : 'white' }} 
+                        onClick={() => setMediaType('movie')}
+                    >
                         Movies
                     </button>
 
-                    <button style={{ backgroundColor: mediaType === 'movie' ? 'white' : 'rgb(142, 233, 142)' }} onClick={() => setMediaType('tv')}>
+                    <button 
+                        style={{ backgroundColor: mediaType === 'movie' ? 'white' : 'rgb(142, 233, 142)' }} 
+                        onClick={() => setMediaType('tv')}
+                    >
                         TV Shows
                     </button>
                 </div>
@@ -49,7 +70,7 @@ const Trending = ({ url }: { url: string }) => {
                 <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                     {
                         mediaType === 'movie' ?
-                        data.results && data.results.map(movie => (
+                        trending?.results?.map(movie => (
                             <div key={movie.id} className='data'>
                                 <Link to={`/details/movie/${movie.id}/${movie.title?.replace(/\s+/g, '-')}`}>
                                     <img 
@@ -63,7 +84,7 @@ const Trending = ({ url }: { url: string }) => {
                             </div>
                         ))
                         :
-                        data.results && data.results.map(show => (
+                        trending?.results?.map(show => (
                             <div key={show.id} className='data'>
                                 <Link to={`/details/tv/${show.id}/${show.name?.replace(/\s+/g, '-')}`}>
                                     <img 
