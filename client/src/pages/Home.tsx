@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Trending from "../components/Trending";
 import '../styles/Home.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -9,6 +9,8 @@ import Latest from "../components/Latest";
 const Home = ({ searched, setSearched }: { searched: string, setSearched: Dispatch<SetStateAction<string>> }) => {
   const navigate = useNavigate();
 
+  const [isTrendingLoaded, setIsTrendingLoaded] = useState(false);
+
   useEffect(() => {
     setSearched('');
   }, [setSearched])
@@ -17,6 +19,7 @@ const Home = ({ searched, setSearched }: { searched: string, setSearched: Dispat
     <div className='home'>
       <div className='main-heading'>
         <h1>Find Movies, TV shows and more</h1>
+
         <div className='search'>
           <input 
             className='search-bar' 
@@ -30,6 +33,7 @@ const Home = ({ searched, setSearched }: { searched: string, setSearched: Dispat
               }
             }}
           />
+
           <Link to='/search'>
             <FontAwesomeIcon 
               icon={faMagnifyingGlass} 
@@ -38,8 +42,9 @@ const Home = ({ searched, setSearched }: { searched: string, setSearched: Dispat
           </Link>
         </div>
       </div>
-      <Trending url='https://movie-db-omega-ten.vercel.app/movies/trending' />
-      <Latest url='https://movie-db-omega-ten.vercel.app/movies/latest' />
+
+      <Trending setTrendingLoading={setIsTrendingLoaded} />
+      <Latest showLoading={isTrendingLoaded} />
     </div>
   )
 };
