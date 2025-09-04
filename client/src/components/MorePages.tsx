@@ -1,21 +1,17 @@
-import { Dispatch, SetStateAction } from "react";
+import { useSearchParams } from "react-router-dom";
 
 type Props = {
-    pageNum: number;
-    setPageNum: Dispatch<SetStateAction<number>>;
+    currentPage: number;
+    setSearchParams: ReturnType<typeof useSearchParams>[1];
     totalPages: number;
 }
 
-const MorePages = ({ pageNum, setPageNum, totalPages }: Props) => {
-    const handleClick = (newPage: number) => {
-        setPageNum(newPage);
-    }
-
+const MorePages = ({ currentPage, setSearchParams, totalPages }: Props) => {
     const numOfPagesToDisplay = 5;
 
     const formulateArrLength = () => {
-        if (pageNum >= totalPages) return 1;
-        return Math.min(totalPages - pageNum + 1, numOfPagesToDisplay);
+        if (currentPage >= totalPages) return 1;
+        return Math.min(totalPages - currentPage + 1, numOfPagesToDisplay);
     }
 
     return (
@@ -23,11 +19,15 @@ const MorePages = ({ pageNum, setPageNum, totalPages }: Props) => {
             {
                 Array.from({ length: formulateArrLength() }).map((_, index) => (
                     <span 
-                        key={`${pageNum}-${index}`}
-                        onClick={() => handleClick(pageNum + index)}
+                        key={`${currentPage}-${index}`}
+                        onClick={() => setSearchParams(prev => {
+                            const newParams = new URLSearchParams(prev);
+                            newParams.set('page', (currentPage + index).toString());
+                            return newParams;
+                        })}
                         className={index === 0 ? 'active-page' : ''}
                     >
-                        {pageNum + index}
+                        {currentPage + index}
                     </span>
                 ))
             }
