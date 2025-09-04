@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import useAxios from './useAxios';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { Clicked } from '../App';
+import { useState } from 'react';
 
 type InitialState = {
     results: {
