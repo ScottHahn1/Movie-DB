@@ -25,7 +25,11 @@ type Params = {
     releaseDate: string
 }
 
-const Latest = ({ url, setClicked }: { url: string, setClicked: Dispatch<SetStateAction<Clicked>> }) => {
+type Props = {
+    showLoading: boolean;
+}
+
+const Latest = ({ showLoading }: Props) => {
     const [mediaType, setMediaType] = useState('movie');
     const now = new Date();
 
@@ -39,57 +43,66 @@ const Latest = ({ url, setClicked }: { url: string, setClicked: Dispatch<SetStat
 
     const params = {
         mediaType: mediaType,
-        releaseDate: mediaType === 'movie' ? `primary_release_date.gte=${lastMonth}&primary_release_date.lte=${today}` : `air_date.gte=${lastMonth}&air_date.lte=${today}`
+        releaseDate: mediaType === 'movie' ? 
+        `primary_release_date.gte=${lastMonth}&primary_release_date.lte=${today}` 
+        : 
+        `air_date.gte=${lastMonth}&air_date.lte=${today}`
     }
 
-    const { data, loading } = useAxios<InitialState, Params>(url, {} as InitialState, params, mediaType);
+    const { data: latest, loading } = useAxios<InitialState, Params>(
+        'https://movie-db-omega-ten.vercel.app/movies/latest', 
+        {} as InitialState, 
+        params
+    );
 
     const noImgFound = require('../assets/images/no-image-found.jpg');
 
+    if (loading && showLoading) {
+        return <div className='loading' />
+    }
+
     return (
         <div>
-            { 
-                !loading && (
-                    <div className='data-container'>
-                        <div className='heading-buttons'>
-                            <h2>Latest</h2>
-                            <button style={{ backgroundColor: mediaType === 'movie' ? 'rgb(142, 233, 142)' : 'white' }} onClick={() => setMediaType('movie')}>Movies</button>
-                            <button style={{ backgroundColor: mediaType === 'movie' ? 'white' : 'rgb(142, 233, 142)' }} onClick={() => setMediaType('tv')}>TV Shows</button>
-                        </div>
-                        <br></br>
-                        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                        {
-                            mediaType === 'movie' ?
-                            data.results.map((movie, index) => (
-                                <div key={ index } className='data'>
-                                    <Link to='/details'>
-                                        <img 
-                                            src={ movie.poster_path ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}` : noImgFound } 
-                                            onClick={() => setClicked({ id: movie.id, type: 'movie' })}
-                                        />
-                                    </Link>
-                                    <h5>{ movie.title }</h5>
-                                    <p>{ movie.release_date }</p>
-                                </div>
-                            ))
-                            :
-                            data.results.map((show, index) => (
-                                <div key={ index } className='data'>
-                                    <Link to='/details'>
-                                        <img 
-                                            src={ show.poster_path ? `https://image.tmdb.org/t/p/w500/${show.poster_path}` : noImgFound } 
-                                            onClick={() => setClicked({ id: show.id, type: 'tv' })}
-                                        />
-                                    </Link>
-                                    <h5>{ show.name }</h5>
-                                    <p>{ show.first_air_date }</p>
-                                </div>
-                            ))                
-                        }
-                        </div>
-                    </div>
-                )
-            }
+            <div className='data-container'>
+                <div className='heading-buttons'>
+                    <h2>Latest</h2>
+                    <button style={{ backgroundColor: mediaType === 'movie' ? 'rgb(142, 233, 142)' : 'white' }} onClick={() => setMediaType('movie')}>Movies</button>
+                    <button style={{ backgroundColor: mediaType === 'movie' ? 'white' : 'rgb(142, 233, 142)' }} onClick={() => setMediaType('tv')}>TV Shows</button>
+                </div>
+
+                <br></br>
+
+                <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                    {
+                        mediaType === 'movie' ?
+                        latest?.results?.map(movie => (
+                            <div key={movie.id} className='data'>
+                                <Link to={`/details/movie/${movie.id}/${movie.title?.replace(/\s+/g, '-')}`}>
+                                    <img 
+                                        src={ movie.poster_path ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}` : noImgFound } 
+                                        alt={movie.title}
+                                    />
+                                </Link>
+                                <h5>{ movie.title }</h5>
+                                <p>{ movie.release_date }</p>
+                            </div>
+                        ))
+                        :
+                        latest?.results?.map(show => (
+                            <div key={show.id} className='data'>
+                                <Link to={`/details/tv/${show.id}/${show.name?.replace(/\s+/g, '-')}`}>
+                                    <img 
+                                        src={ show.poster_path ? `https://image.tmdb.org/t/p/w500/${show.poster_path}` : noImgFound } 
+                                        alt={show.title}
+                                    />
+                                </Link>
+                                <h5>{ show.name }</h5>
+                                <p>{ show.first_air_date }</p>
+                            </div>
+                        ))                
+                    }
+                </div>
+            </div>
         </div>
     )
 }
