@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios, { AxiosHeaders } from 'axios';
 
-const useAxios = <S, T>(url: string, initialState: S, params: T, dependency?: number | string, secondDependency?: boolean, headers?: AxiosHeaders) => {
+const useAxios = <S, T>(url: string, initialState: S, params: T, headers?: AxiosHeaders) => {
     const [data, setData] = useState<S>(initialState);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
@@ -9,23 +9,22 @@ const useAxios = <S, T>(url: string, initialState: S, params: T, dependency?: nu
     axios.defaults.withCredentials = true;
 
     useEffect(() => {
-        if (url) {
-            setLoading(true);
-            setError(false);
-            axios({
-                method: 'GET',
-                headers: headers,
-                url: url,
-                params: params
-            }).then(res => {
+        const fetchData = async () => {
+            try {
+                setLoading(true);
+                setError(false);
+                const res = await axios({ method: 'GET', url, headers, params });
                 setData(res.data);
-                setLoading(false);
-            }).catch((err) => {
-                console.log(err);
+            } catch {
                 setError(true);
-            });
+            } finally {
+                setLoading(false);
+            }
         }
-    }, [url, dependency, secondDependency])
+
+        fetchData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [url, JSON.stringify(params), headers])
 
     return { data, loading, error };
 }
