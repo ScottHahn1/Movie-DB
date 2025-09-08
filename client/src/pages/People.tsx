@@ -1,10 +1,9 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { Clicked } from "../App";
+import { useEffect, useState } from "react";
 import useAxios from "../components/useAxios";
 import '../styles/People.css';
 import { Link } from "react-router-dom";
 
-type People = {
+type PeopleData = {
     page: number,
     results: {
         id: number,
@@ -24,9 +23,14 @@ type People = {
     total_results: number
 }
 
-const People = ({ setClicked }: { setClicked: Dispatch<SetStateAction<Clicked>> }) => {
+const People = () => {
     const [pageNum, setPageNum] = useState(1);
-    const { data: people, loading, error } = useAxios<People, { page: number }>('https://movie-db-omega-ten.vercel.app/people/popular', {} as People, {page: pageNum}, pageNum);
+    
+    const { data: people, loading } = useAxios<PeopleData, { page: number }>(
+        'https://movie-db-omega-ten.vercel.app/people/popular', 
+        {} as PeopleData, 
+        { page: pageNum }
+    );
     const [totalPages, setTotalPages] = useState(0);
 
     const noImgFound = require('../assets/images/no-image-found.jpg');
@@ -50,13 +54,12 @@ const People = ({ setClicked }: { setClicked: Dispatch<SetStateAction<Clicked>> 
                     !loading && (
                         people.results.map(person => (
                             <div className='person' key={person.id}>
-                                <Link to='/person'>
+                                <Link to={`/person/${person.id}/${person.name.replace(/\s+/g, '-')}`}>
                                     <img 
-                                        src={ person.profile_path ? `https://image.tmdb.org/t/p/w300/${person.profile_path}` : noImgFound } 
-                                        alt={ person.name } 
-                                        onClick={ () => setClicked({ id: person.id, type: 'person' }) }
+                                        src={person.profile_path ? `https://image.tmdb.org/t/p/w300/${person.profile_path}` : noImgFound} 
+                                        alt={person.name} 
                                     />
-                                    <h4>{ person.name }</h4>
+                                    <h4>{person.name}</h4>
                                 </Link>
                                 { person.known_for_department }
                             </div>
