@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import useAxios from "./useAxios";
 import '../styles/Search.css';
 import SearchResults from "./SearchResults";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import MorePages from "./MorePages";
 
 type Params = { 
@@ -31,21 +31,22 @@ type Data = {
 }
 
 const Search = () => {
-    const { query } = useParams();
-    const [pageNum, setPageNum] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
-
     const [searchResultsType, setSearchResultsType] = useState('movies');
+
+    const [searchParams, setSearchParams] = useSearchParams();
+    const { query } = useParams<{ query: string }>();
+    const page = Number(searchParams.get('page')) || 1;
 
     const params = { 
         query,
-        page: pageNum,
+        page,
         limit: 20
     };
 
-    const { data: movies } = useAxios<Data, Params>(`https://movie-db-omega-ten.vercel.app/search/movies`, {} as Data, params, pageNum);
-    const { data: shows } = useAxios<Data, Params>(`https://movie-db-omega-ten.vercel.app/search/shows`, {} as Data, params, pageNum);
-    const { data: people } = useAxios<Data, Params>(`https://movie-db-omega-ten.vercel.app/search/people`, {} as Data, params, pageNum);
+    const { data: movies } = useAxios<Data, Params>(`https://movie-db-omega-ten.vercel.app/search/movies`, {} as Data, params);
+    const { data: shows } = useAxios<Data, Params>(`https://movie-db-omega-ten.vercel.app/search/shows`, {} as Data, params);
+    const { data: people } = useAxios<Data, Params>(`https://movie-db-omega-ten.vercel.app/search/people`, {} as Data, params);
 
     useEffect(() => {
         if (movies && shows && people) {
@@ -57,11 +58,20 @@ const Search = () => {
                 setTotalPages(people.total_pages);
             }
         }
-    }, [movies, shows, people, pageNum, searchResultsType])
+    }, [movies, shows, people, page, searchResultsType])
 
     const handleSearchTypeChange = (type: string) => {
         setSearchResultsType(type);
-        setPageNum(1);
+        setSearchParams(prev => {
+            const newParams = new URLSearchParams(prev);
+            newParams.set('page', '1');
+            return newParams;
+        });
+    }
+
+    const goToPage = (newPage: number) => {
+        searchParams.set('page', newPage.toString());
+        setSearchParams(searchParams);
     }
 
     return (
@@ -78,6 +88,7 @@ const Search = () => {
                     <span>Movies</span>
                     <span style={{ fontWeight: 'normal' }}>({ movies.total_results })</span>
                 </div>
+                
                 <div 
                     className={ searchResultsType === 'shows' ? 'search-results-type active' : 'search-results-type' } 
                     onClick={() => handleSearchTypeChange('shows')}
@@ -85,6 +96,7 @@ const Search = () => {
                     <span>TV Shows</span>
                     <span style={{ fontWeight: 'normal' }}>({ shows.total_results })</span>
                 </div>
+
                 <div 
                     className={ searchResultsType === 'people' ? 'search-results-type active' : 'search-results-type' } 
                     onClick={() => handleSearchTypeChange('people')}
@@ -96,11 +108,12 @@ const Search = () => {
 
             <div className='search-data'>
                 {
-                    movies?.results?.length > 0 &&
                     searchResultsType === 'movies' && 
+                    movies?.results?.length > 0 &&
                     movies.results.map(movie => (
                         <SearchResults 
                             key={movie.id}
+                            id={movie.id}
                             image={movie.poster_path} 
                             name={movie.title} 
                             overview={movie.overview}
@@ -111,11 +124,12 @@ const Search = () => {
                 }
 
                 {
-                    shows?.results?.length > 0 &&
                     searchResultsType === 'shows' && 
+                    shows?.results?.length > 0 &&
                     shows.results.map(show => (
                         <SearchResults 
                             key={show.id}
+                            id={show.id}
                             image={show.poster_path} 
                             name={show.name} 
                             overview={show.overview} 
@@ -126,12 +140,13 @@ const Search = () => {
                 }
 
                 {
-                    people?.results?.length > 0 &&
                     searchResultsType === 'people' && 
+                    people?.results?.length > 0 &&
                     people.results.map(person => (
                         <SearchResults 
                             key={person.id}
                             actingCredits={person.known_for_department}
+                            id={person.id}
                             image={person.poster_path} 
                             name={person.name} 
                             searchResultsType={searchResultsType} 
@@ -141,27 +156,25 @@ const Search = () => {
             </div>
 
             <div className='pages'>
+                {
+                    page !== 1 &&
+                    <button onClick={() => goToPage(Math.max(page - 1, 1))}>
+                        Previous
+                    </button>
+                }
 
-            {
-                pageNum !== 1 &&
-                <button onClick={() => setPageNum(page => Math.max(page - 1, 1))}>
-                    Previous
-                </button>
-            }
+                <MorePages 
+                    currentPage={page} 
+                    setSearchParams={setSearchParams} 
+                    totalPages={totalPages} 
+                />
 
-            <MorePages pageNum={pageNum} setPageNum={setPageNum} totalPages={totalPages} />
-
-            {
-                totalPages && pageNum !== totalPages &&
-                <button 
-                    onClick={
-                        () => setPageNum(page => (totalPages ? Math.min(page + 1, totalPages) : page + 1))
-                    } 
-                >
-                    Next
-                </button>
-            }
-
+                {
+                    totalPages && page !== totalPages &&
+                    <button onClick={() => goToPage(totalPages ? Math.min(page + 1, totalPages) : page + 1)}>
+                        Next
+                    </button>
+                }
             </div>
         </div>
     )
