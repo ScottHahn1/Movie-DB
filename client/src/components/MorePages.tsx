@@ -25,7 +25,7 @@ const MorePages = ({ currentPage, setSearchParams, totalPages }: Props) => {
                             newParams.set('page', (currentPage + index).toString());
                             return newParams;
                         })}
-                        className={index === 0 ? 'active-page' : ''}
+                        className={index === 0 ? 'active-page pointer' : 'pointer'}
                     >
                         {currentPage + index}
                     </span>
