@@ -5,7 +5,7 @@
   "main": "server.ts",
   "scripts": {
     "build": "npm i",
-    "dev": "nodemon server.ts"
+    "dev": "nodemon --exec ts-node server.ts"
   },
   "keywords": [],
   "author": "",
@@ -28,6 +28,7 @@
     "@types/mysql": "^2.15.25",
     "@types/node": "^20.11.4",
     "nodemon": "^3.0.3",
+    "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   }
 }
