@@ -34,7 +34,7 @@ const Home = ({ searched, setSearched }: { searched: string, setSearched: Dispat
             }}
           />
 
-          <Link to='/search'>
+          <Link to={`/search/${searched.replace(/\s+/g, '-')}`}>
             <FontAwesomeIcon 
               icon={faMagnifyingGlass} 
               className='search-icon'
@@ -44,7 +44,7 @@ const Home = ({ searched, setSearched }: { searched: string, setSearched: Dispat
       </div>
 
       <Trending setTrendingLoading={setIsTrendingLoaded} />
-      <Latest showLoading={isTrendingLoaded} />
+      { isTrendingLoaded && <Latest /> }
     </div>
   )
 };
