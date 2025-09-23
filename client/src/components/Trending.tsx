@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import useAxios from './useAxios';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
-type InitialState = {
+type TrendingResponse = {
     results: {
         backdrop_path: 'string',
         genre_ids: [],
@@ -26,10 +26,9 @@ type Props = {
 const Trending = ({ setTrendingLoading }: Props) => {
     const [mediaType, setMediaType] = useState('movie');
 
-    const { data: trending, loading } = useAxios<InitialState, { page: number, mediaType: string }>(
+    const { data: trending, loading, error } = useAxios<TrendingResponse, { page: number, mediaType: string }>(
         'https://movie-db-omega-ten.vercel.app/movies/trending', 
-        {} as InitialState, 
-        { page: 1, mediaType: mediaType }
+        { page: 1, mediaType }
     );
 
     const noImgFound = require('../assets/images/no-image-found.jpg');
@@ -64,6 +63,14 @@ const Trending = ({ setTrendingLoading }: Props) => {
                         TV Shows
                     </button>
                 </div>
+
+                {
+                    error ? 
+                    <div className='error'>Error loading trending {mediaType === 'movie' ? 'movies' : 'TV shows'}.</div>
+                    :
+                    (!trending || !trending.results) && 
+                    <div className='error'>No trending {mediaType === 'movie' ? 'movies' : 'TV shows'} available.</div>
+                }
 
                 <br></br>
 
