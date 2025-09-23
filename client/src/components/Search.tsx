@@ -10,7 +10,7 @@ type Params = {
     page: number
 }
 
-type Data = {
+type SearchResponse= {
     results: {
         backdrop_path: string,
         genre_ids: [],
@@ -44,9 +44,17 @@ const Search = () => {
         limit: 20
     };
 
-    const { data: movies } = useAxios<Data, Params>(`https://movie-db-omega-ten.vercel.app/search/movies`, {} as Data, params);
-    const { data: shows } = useAxios<Data, Params>(`https://movie-db-omega-ten.vercel.app/search/shows`, {} as Data, params);
-    const { data: people } = useAxios<Data, Params>(`https://movie-db-omega-ten.vercel.app/search/people`, {} as Data, params);
+    const { data: movies, loading: moviesLoading } = useAxios<SearchResponse, Params>(
+        `https://movie-db-omega-ten.vercel.app/search/movies`, params
+    );
+    
+    const { data: shows, loading: showsLoading } = useAxios<SearchResponse, Params>(
+        `https://movie-db-omega-ten.vercel.app/search/shows`, params
+    );
+    
+    const { data: people, loading: peopleLoading } = useAxios<SearchResponse, Params>(
+        `https://movie-db-omega-ten.vercel.app/search/people`, params
+    );
 
     useEffect(() => {
         if (movies && shows && people) {
@@ -74,6 +82,10 @@ const Search = () => {
         setSearchParams(searchParams);
     }
 
+    if (moviesLoading || showsLoading || peopleLoading) {
+        return <div className='loading' />
+    }
+
     return (
         <div className='search-container'>
             <div className='search-results'>
@@ -86,7 +98,7 @@ const Search = () => {
                     onClick={() => handleSearchTypeChange('movies')}
                 >
                     <span>Movies</span>
-                    <span style={{ fontWeight: 'normal' }}>({ movies.total_results })</span>
+                    <span style={{ fontWeight: 'normal' }}>({ movies?.total_results })</span>
                 </div>
                 
                 <div 
@@ -94,7 +106,7 @@ const Search = () => {
                     onClick={() => handleSearchTypeChange('shows')}
                 >
                     <span>TV Shows</span>
-                    <span style={{ fontWeight: 'normal' }}>({ shows.total_results })</span>
+                    <span style={{ fontWeight: 'normal' }}>({ shows?.total_results })</span>
                 </div>
 
                 <div 
@@ -102,15 +114,16 @@ const Search = () => {
                     onClick={() => handleSearchTypeChange('people')}
                 >
                     <span>People</span>
-                    <span style={{ fontWeight: 'normal' }}>({ people.total_results })</span>
+                    <span style={{ fontWeight: 'normal' }}>({ people?.total_results })</span>
                 </div>
             </div>
 
             <div className='search-data'>
                 {
                     searchResultsType === 'movies' && 
+                    movies &&
                     movies?.results?.length > 0 &&
-                    movies.results.map(movie => (
+                    movies?.results?.map(movie => (
                         <SearchResults 
                             key={movie.id}
                             id={movie.id}
@@ -125,8 +138,9 @@ const Search = () => {
 
                 {
                     searchResultsType === 'shows' && 
+                    shows &&
                     shows?.results?.length > 0 &&
-                    shows.results.map(show => (
+                    shows?.results?.map(show => (
                         <SearchResults 
                             key={show.id}
                             id={show.id}
@@ -141,8 +155,9 @@ const Search = () => {
 
                 {
                     searchResultsType === 'people' && 
+                    people &&
                     people?.results?.length > 0 &&
-                    people.results.map(person => (
+                    people?.results?.map(person => (
                         <SearchResults 
                             key={person.id}
                             actingCredits={person.known_for_department}
