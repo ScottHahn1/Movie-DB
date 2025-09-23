@@ -121,6 +121,10 @@ button {
   border-radius: 15px;
 }
 
+.pages {
+  display: flex;
+}
+
 .register-login {
   padding-top: 10rem;
 }
@@ -137,6 +141,18 @@ button {
   height: 5rem;
   animation: spin 2s linear infinite;
   margin: 2rem auto;
+}
+
+.error {
+  background-color: #ffe5e5; 
+  color: #b30000;             
+  border: 1px solid #ff9999; 
+  border-radius: 6px;         
+  padding: 1rem 1rem;        
+  text-align: center;         
+  font-weight: 600;          
+  max-width: 30rem;           
+  margin: 2rem auto;          
 }
 
 @keyframes fade-in {
