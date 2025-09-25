@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import useAxios from '../components/useAxios';
 import MorePages from '../components/MorePages';
 
-type Data = {
+type NowPlayingResponse = {
     results: {
         backdrop_path: 'string',
         genre_ids: [],
@@ -21,17 +21,19 @@ type Data = {
     total_results: number
 }
 
-const Popular = () => {
+const NowPlaying = () => {
     const [totalPages, setTotalPages] = useState(0);
 
     const [searchParams, setSearchParams] = useSearchParams();
     const { type } = useParams<{ type: string }>();
-    const mediaType = type ? type : 'movie';
+    const mediaType = type ? type : 'movies';
     const page = Number(searchParams.get('page')) || 1;
     
-    const { data, loading } = useAxios<Data, { page: number, mediaType: string }>(
-        `https://movie-db-omega-ten.vercel.app/${mediaType}/nowPlaying`,
-        {} as Data, 
+    const { data, loading, error } = useAxios<NowPlayingResponse, { page: number, mediaType: string }>(
+        mediaType === 'movies' ?
+        `https://movie-db-omega-ten.vercel.app/${mediaType}/nowPlaying`
+        :
+        `https://movie-db-omega-ten.vercel.app/${mediaType}/onTheAir`,
         { page, mediaType }
     );
 
@@ -39,7 +41,7 @@ const Popular = () => {
     
     useEffect(() => {
         if (!data) return;
-        setTotalPages(Math.min(data.total_pages, 500))
+        setTotalPages(Math.min(data.total_pages, 500));
     }, [data])
 
     const goToPage = (newPage: number) => {
@@ -54,16 +56,24 @@ const Popular = () => {
     return (
         <div className='data-container'>
             { 
-                mediaType === 'movie' ? 
+                mediaType === 'movies' ? 
                 <h2>Now Showing</h2> 
                 : 
                 <h2>On The Air</h2> 
             }
 
+            {
+                error ? 
+                <div className='error'>Error loading {mediaType === 'movies' ? 'movies' : 'TV shows'}.</div>
+                :
+                (!data || !data.results) && 
+                <div className='error'>No {mediaType === 'movies' ? 'movies currently showing' : 'TV shows on the air'}.</div>
+            }
+
             <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                 {
-                    data.results && data.results.map((movie, index) => (
-                        <div key={ index } className='data'>
+                    data?.results?.map(movie => (
+                        <div key={movie.id} className='data'>
                             <Link to={
                                 mediaType === 'movies' ?
                                 `/details/movie/${movie.id}/${movie.title?.replace(/\s+/g, '-')}` 
@@ -72,7 +82,7 @@ const Popular = () => {
                             }>
                                 <img 
                                     src={ movie.poster_path ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}` : noImgFound } 
-                                    alt={mediaType === 'movies' ? movie.title : movie.name}
+                                    alt={ mediaType === 'movies' ? movie.title : movie.name }
                                 />
                             </Link>
                             <h5>
@@ -86,29 +96,33 @@ const Popular = () => {
                 }
             </div>
 
-            <div className='pages'>
-                {
-                    page !== 1 &&
-                    <button onClick={() => goToPage(Math.max(page - 1, 1))}>
-                        Previous
-                    </button>
-                }
+            {
+                data?.results && (
+                    <div className='pages'>
+                        {
+                            page !== 1 &&
+                            <button onClick={() => goToPage(Math.max(page - 1, 1))}>
+                                Previous
+                            </button>
+                        }
 
-                <MorePages 
-                    currentPage={page} 
-                    setSearchParams={setSearchParams} 
-                    totalPages={totalPages} 
-                />
+                        <MorePages 
+                            currentPage={page} 
+                            setSearchParams={setSearchParams} 
+                            totalPages={totalPages} 
+                        />
 
-                {
-                    totalPages && page !== totalPages &&
-                    <button onClick={() => goToPage(totalPages ? Math.min(page + 1, totalPages) : page + 1)}>
-                        Next
-                    </button>
-                }
-            </div>
+                        {
+                            totalPages && page !== totalPages &&
+                            <button onClick={() => goToPage(totalPages ? Math.min(page + 1, totalPages) : page + 1)}>
+                                Next
+                            </button>
+                        }
+                    </div>
+                )
+            }
         </div>
     )
 }
 
-export default Popular;
+export default NowPlaying;
