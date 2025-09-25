@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import useAxios from '../components/useAxios';
 import MorePages from '../components/MorePages';
 
-type InitialState = {
+type PopularResponse = {
     results: {
         backdrop_path: 'string',
         genre_ids: [],
@@ -28,9 +28,8 @@ const Popular = () => {
     const { type: mediaType } = useParams<{ type: string }>();
     const page = Number(searchParams.get('page')) || 1;
 
-    const { data, loading } = useAxios<InitialState, { page: number }>(
+    const { data, loading, error } = useAxios<PopularResponse, { page: number }>(
         `https://movie-db-omega-ten.vercel.app/${mediaType}/popular`,
-        {} as InitialState,
         { page }
     );
 
@@ -38,7 +37,7 @@ const Popular = () => {
 
     useEffect(() => {
         if (!data) return;
-        setTotalPages(Math.min(data.total_pages, 500))
+        setTotalPages(Math.min(data.total_pages, 500));
     }, [data])
 
     const goToPage = (newPage: number) => {
@@ -57,6 +56,14 @@ const Popular = () => {
                 <h2>Popular Movies</h2> 
                 : 
                 <h2>Popular TV Shows</h2> 
+            }
+
+            {
+                error ? 
+                <div className='error'>Error loading popular {mediaType === 'movies' ? 'movies' : 'TV shows'}.</div>
+                :
+                (!data || !data.results) && 
+                <div className='error'>No popular {mediaType === 'movies' ? 'movies' : 'TV shows'} available.</div>
             }
 
             <div style={{ display: 'flex', flexWrap: 'wrap' }}>
@@ -86,27 +93,31 @@ const Popular = () => {
                 }
             </div>
 
-            <div className='pages'>
-                {
-                    page !== 1 &&
-                    <button onClick={() => goToPage(Math.max(page - 1, 1))}>
-                        Previous
-                    </button>
-                }
+            {
+                data?.results && (
+                    <div className='pages'>
+                        {
+                            page !== 1 &&
+                            <button onClick={() => goToPage(Math.max(page - 1, 1))}>
+                                Previous
+                            </button>
+                        }
 
-                <MorePages 
-                    currentPage={page} 
-                    setSearchParams={setSearchParams} 
-                    totalPages={totalPages} 
-                />
+                        <MorePages 
+                            currentPage={page} 
+                            setSearchParams={setSearchParams} 
+                            totalPages={totalPages} 
+                        />
 
-                {
-                    totalPages && page !== totalPages &&
-                    <button onClick={() => goToPage(totalPages ? Math.min(page + 1, totalPages) : page + 1)}>
-                        Next
-                    </button>
-                }
-            </div>
+                        {
+                            totalPages && page !== totalPages &&
+                            <button onClick={() => goToPage(totalPages ? Math.min(page + 1, totalPages) : page + 1)}>
+                                Next
+                            </button>
+                        }
+                    </div>
+                )
+            }
         </div>
     )
 }
