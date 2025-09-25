@@ -46,7 +46,7 @@ tvRouter.get('/topRated', (req, res) => {
             Authorization: `Bearer ${token}`
         },
         method: 'GET',
-        url: `https://api.themoviedb.org/3/${req.query.mediaType}/top_rated?language=en-US&page=${req.query.page}`
+        url: `https://api.themoviedb.org/3/tv/top_rated?language=en-US&page=${req.query.page}`
     }).then(response => {
         res.send(response.data);
     }).catch(err => {
