@@ -1,11 +1,14 @@
 import { Link, useParams } from "react-router-dom";
-import { CreditsType } from "../typeAliases/Credits";
+import { CreditsResponse } from "../typeAliases/Credits";
 import useAxios from "./useAxios";
 
 const Cast = () => {
     const { id, type } = useParams();
 
-    const { data: credits, loading } = useAxios<CreditsType, {}>(`https://movie-db-omega-ten.vercel.app/movies/credits/${type}/${id}`, {} as CreditsType, {});
+    const { data: credits, loading } = useAxios<CreditsResponse, {}>(
+        `https://movie-db-omega-ten.vercel.app/movies/credits/${type}/${id}`, 
+        {}
+    );
 
     const noImgFound = require('../assets/images/no-image-found.jpg');
 
@@ -16,7 +19,7 @@ const Cast = () => {
     return (
         <div className='credits-cast'>
             {
-                credits.cast.map(person => (
+                credits?.cast?.map(person => (
                     <div className='person' key={`${person.id}-${person.character}`}>
                         <Link to={`/person/${person.id}/${person.name.replace(/\s+/g, '-')}`}>
                             <img 
@@ -24,8 +27,9 @@ const Cast = () => {
                                 alt={person.name}
                             />
 
+                            <h5>{person.name}</h5>
                         </Link>
-                        <h5>{person.name}</h5>
+
                         {person.character}
                     </div>
                 ))
