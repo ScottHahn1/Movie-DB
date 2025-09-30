@@ -12,8 +12,14 @@ import Facts from '../components/Facts';
 const Details = () => {
     const { id, type } = useParams();
 
-    const { data: details, loading: detailsLoading } = useAxios<DetailsType, {}>(`https://movie-db-omega-ten.vercel.app/movies/details/${type}/${id}`, {} as DetailsType, {});
-    const { data: credits, loading: creditsLoading } = useAxios<CreditsType, {}>(`https://movie-db-omega-ten.vercel.app/movies/credits/${type}/${id}`, {} as CreditsType, {});
+    const { data: details, loading: detailsLoading } = useAxios<DetailsType, {}>(
+`https://movie-db-omega-ten.vercel.app/movies/details/${type}/${id}`, 
+        {}
+);
+    const { data: credits, loading: creditsLoading } = useAxios<CreditsResponse, {}>(
+`https://movie-db-omega-ten.vercel.app/movies/credits/${type}/${id}`, 
+        {}
+);
 
     const [showRatingsBar, setShowRatingsBar] = useState(false);
     const [showFavouritesTooltip, setShowFavouritesTooltip] = useState(false);
