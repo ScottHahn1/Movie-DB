@@ -4,7 +4,7 @@ import '../styles/Details.css';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { DetailsType } from '../typeAliases/Details';
-import { CreditsType } from '../typeAliases/Credits';
+import { CreditsResponse } from '../typeAliases/Credits';
 import { Rate } from '../components/Rate';
 import Cast from '../components/Cast';
 import Facts from '../components/Facts';
@@ -13,13 +13,13 @@ const Details = () => {
     const { id, type } = useParams();
 
     const { data: details, loading: detailsLoading } = useAxios<DetailsType, {}>(
-`https://movie-db-omega-ten.vercel.app/movies/details/${type}/${id}`, 
+        `https://movie-db-omega-ten.vercel.app/movies/details/${type}/${id}`, 
         {}
-);
+    );
     const { data: credits, loading: creditsLoading } = useAxios<CreditsResponse, {}>(
-`https://movie-db-omega-ten.vercel.app/movies/credits/${type}/${id}`, 
+        `https://movie-db-omega-ten.vercel.app/movies/credits/${type}/${id}`, 
         {}
-);
+    );
 
     const [showRatingsBar, setShowRatingsBar] = useState(false);
     const [showFavouritesTooltip, setShowFavouritesTooltip] = useState(false);
@@ -43,6 +43,7 @@ const Details = () => {
     useEffect(() => {
         sessionStorage.getItem('userId') && 
         !detailsLoading && 
+        details &&
         checkIfFavourited(details.id);
     }, [details])
 
@@ -64,11 +65,14 @@ const Details = () => {
     const handleFavouriteClick = () => {
         if (sessionStorage.getItem('token')) {
             if (isFavourited) {
+                if (details)
                 deleteMovie(details.id);
             } else {
                 if (type === 'movie') {
+                    if (details)
                     addMovieToFavourites(details.id, details.title, details.release_date, details.poster_path, details.vote_average, details.overview, details.runtime) 
                 } else {
+                    if (details)
                     addMovieToFavourites(details.id, details.name, details.first_air_date, details.poster_path, details.vote_average, details.overview)
                 }
             }
@@ -97,6 +101,10 @@ const Details = () => {
 
     if (detailsLoading || creditsLoading) {
         return <div className='loading' />
+    }
+
+    if (!details) {
+        return <div>No details to show</div>
     }
 
     return (
@@ -196,7 +204,7 @@ const Details = () => {
                                 <h4>Director</h4>
                                 <p>
                                     {
-                                        credits.crew && 
+                                        credits?.crew && 
                                         credits.crew.length > 0 && 
                                         credits.crew.find(person => person.job === 'Director')?.name
                                     }
