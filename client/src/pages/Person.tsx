@@ -6,8 +6,8 @@ import { Link, useParams } from "react-router-dom";
 const Person = () => {
     const { id } = useParams();
 
-    const { data: person, loading: personLoading } = useAxios<Details, {}>(`https://movie-db-omega-ten.vercel.app/people/${id}`, {} as Details, {});
-    const { data: credits, loading: creditsLoading } = useAxios<Credits, {}>(`https://movie-db-omega-ten.vercel.app/people/credits/${id}`, {} as Credits, {});
+    const { data: person, loading: personLoading } = useAxios<Details, {}>(`https://movie-db-omega-ten.vercel.app/people/${id}`, {});
+    const { data: credits, loading: creditsLoading } = useAxios<Credits, {}>(`https://movie-db-omega-ten.vercel.app/people/credits/${id}`, {});
 
     const noImgFound = require('../assets/images/no-image-found.jpg');
 
