@@ -5,7 +5,10 @@ import { useParams } from "react-router-dom";
 const Facts = () => {
     const { id, type } = useParams();
 
-    const { data, loading } = useAxios<DetailsType, {}>(`https://movie-db-omega-ten.vercel.app/movies/details/${type}/${id}`, {} as DetailsType, {});
+    const { data, loading } = useAxios<DetailsType, {}>(
+`https://movie-db-omega-ten.vercel.app/movies/details/${type}/${id}`, 
+        {}
+);
 
     const noImgFound = require('../assets/images/no-image-found.jpg');
 
