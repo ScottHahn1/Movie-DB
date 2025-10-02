@@ -15,6 +15,14 @@ const Person = () => {
         return <div className='loading' />
     }
 
+    if (!person) {
+        return <div>No data</div>
+    }
+
+    if (!credits) {
+        return <div>No data</div>
+    }
+
     return (
         <div className='person-container'>
             <>
