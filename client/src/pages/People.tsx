@@ -32,8 +32,7 @@ const People = () => {
 
     const { data: people, loading } = useAxios<PeopleData, { page: number }>(
         'https://movie-db-omega-ten.vercel.app/people/popular', 
-        {} as PeopleData, 
-        { page }
+                { page }
     );
 
     const noImgFound = require('../assets/images/no-image-found.jpg');
