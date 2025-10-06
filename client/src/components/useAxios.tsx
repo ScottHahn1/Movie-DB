@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import axios, { AxiosHeaders } from 'axios';
 
-const useAxios = <S, T>(url: string, initialState: S, params: T, headers?: AxiosHeaders) => {
-    const [data, setData] = useState<S>(initialState);
+const useAxios = <S, T>(url: string, params: T, headers?: AxiosHeaders) => {
+    const [data, setData] = useState<S | undefined>(undefined);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
 
