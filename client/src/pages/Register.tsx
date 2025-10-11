@@ -27,7 +27,7 @@ const Register = () => {
                 } else {
                     alert(res.data.sqlMessage)
                 }
-                            }).catch(() => {
+            }).catch(() => {
                 alert(`We're having trouble connecting to the server. Please try again later`);
             })
         } else {
@@ -41,13 +41,13 @@ const Register = () => {
 
             <form onSubmit={signUp}>
                 <label> Username <br></br>
-                    <input className='form-input' type='text' value={username} onChange={ e => setUsername(e.target.value) } />
+                    <input className='form-input' required type='text' value={username} onChange={ e => setUsername(e.target.value) } />
                 </label>
                 <label> Password <br></br>
-                    <input className='form-input' type='text' value={password} onChange={ e => setPassword(e.target.value) } />
+                    <input className='form-input' required type='text' value={password} onChange={ e => setPassword(e.target.value) } />
                 </label>
                 <label> Confirm Password <br></br>
-                    <input className='form-input' type='text' value={confirmPassword} onChange={ e => setConfirmPassword(e.target.value) } />
+                    <input className='form-input' required type='text' value={confirmPassword} onChange={ e => setConfirmPassword(e.target.value) } />
                 </label>
                 <button type='submit'>Sign Up</button>
             </form>
