@@ -39,8 +39,8 @@ function App() {
           <Route path='/popular/people' element={ <People /> } /> 
           <Route path='/search/:query' element={ <Search /> } />
 
-          { sessionStorage.getItem('userId') && <Route path='/favourites' element={ <Favourites /> } /> }
-          { sessionStorage.getItem('userId') && <Route path='/ratings' element={ <Ratings /> } /> }
+          <Route path='/favourites' element={ <Favourites /> } /> 
+          <Route path='/ratings' element={ <Ratings /> } /> 
 
           <Route path='/popular/:type' element={ <Popular /> } />
           <Route path='/nowPlaying/:type' element={ <NowPlaying /> } />
