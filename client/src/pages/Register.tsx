@@ -12,6 +12,11 @@ const Register = () => {
 
     const signUp = (e: React.FormEvent<HTMLElement>) => {
         e.preventDefault();
+
+        if (!password || !confirmPassword) {
+            return;
+        }
+
         if (password === confirmPassword) {
             axios.post('https://movie-db-omega-ten.vercel.app/users/register', {
                 username: username,
@@ -20,11 +25,10 @@ const Register = () => {
                 if (res.data.registered) {
                     navigate('/login');
                 } else {
-                    alert('Register Failed');
+                    alert(res.data.sqlMessage)
                 }
-                console.log(res)
-            }).catch(err => {
-                console.log(err);
+                            }).catch(() => {
+                alert(`We're having trouble connecting to the server. Please try again later`);
             })
         } else {
             setPasswordsMatch(false);
