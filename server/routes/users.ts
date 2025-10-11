@@ -46,12 +46,11 @@ usersRouter.post('/register', (req, res) => {
     
     bcrypt.hash(password, salt, (err: any, hash: any) => {
         if (err) {
-            console.log(err);
             res.send(err);
         } else {
             pool.query(sql, [username, hash], (err: any, result: any) => {
                 if (err) {
-                    return res.send(err)
+                    return res.send(err);
                 }
                 return res.json({ registered: true, result });
             })
@@ -66,15 +65,16 @@ usersRouter.post('/login', (req, res) => {
     
     pool.query(sql, [username], (err: any, result: any) => {
         if (err) {
-            return res.json({Message: 'ERROR in Node'})
+            return res.json({ message: 'Login could not be completed at this time. Please try again later.' })
         }
-        // console.log(result);
+
         if (result.length > 0) {
-            bcrypt.compare(password, result[0].password, (err: any, response: any) => {
+            bcrypt.compare(password, result[0].password, (err: any, match: boolean) => {
                 if (err) {
                     return res.json('Error logging in');
                 }
-                if (response) {
+                
+                if (match) {
                     const id = result[0].userId;
                     const token = jwt.sign({ id }, 'jwtSecretKey', { expiresIn: 3600 })
                     return res.json({ login: true, token, result, id, username });
@@ -82,9 +82,11 @@ usersRouter.post('/login', (req, res) => {
                 return res.json({ login: false });
             })
         } else {
-            console.log('Login Failed');
+            return res.json({
+                login: false,
+                message: 'Invalid username or password.'
+            });
         }
-
     })
 })
 
