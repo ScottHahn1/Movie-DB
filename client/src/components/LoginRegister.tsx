@@ -1,7 +1,31 @@
-import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Dispatch, SetStateAction, useState } from "react";
+import { useNavigate, Link, NavigateFunction } from "react-router-dom";
+import { User } from "../hooks/useAuth";
+import axios from "axios";
 
-const LoginRegister = () => {
+type Props = {
+  loggedIn: boolean,
+  setLoggedIn: Dispatch<SetStateAction<boolean>>,
+  user: User | null,
+  setUser: Dispatch<SetStateAction<User | null>>
+}
+
+const handleLogin = (navigate: NavigateFunction) => {
+  navigate('/login');
+}
+
+const handleLogout = async (setLoggedIn: Dispatch<SetStateAction<boolean>>, setUser: Dispatch<SetStateAction<User | null>>) => {
+  try {
+    await axios.post('http://localhost:8888/users/logout', {}, { withCredentials: true });
+    setLoggedIn(false);
+    setUser(null);
+    alert('Successfully logged out.');
+  } catch {
+    alert('Failed to logout.');
+  }
+}
+
+const LoginRegister = ({ loggedIn, setLoggedIn, user, setUser }: Props) => {
   const navigate = useNavigate();
   const [profileDropdownVisible, setProfileDropdownVisible] = useState(false);
 
@@ -9,10 +33,10 @@ const LoginRegister = () => {
     <>
        <div className='login-register'>
           {
-            !sessionStorage.getItem('token') ? (
-              <button onClick={() => navigate('/login')}>Login</button>
+            !loggedIn ? (
+              <button onClick={() => handleLogin(navigate)}>Login</button>
             ) : (
-              <button onClick={() => sessionStorage.removeItem('token')}>Logout</button>
+              <button onClick={() => handleLogout(setLoggedIn, setUser)}>Logout</button>
             )
           }
 
@@ -23,7 +47,7 @@ const LoginRegister = () => {
           {
             sessionStorage.getItem('token') && (
               <div onMouseEnter={() => setProfileDropdownVisible(true)} className='profile' onMouseLeave={() => setProfileDropdownVisible(false)}>
-                { sessionStorage.getItem('username')?.slice(0, 1).toUpperCase() }
+                { user?.username?.slice(0, 1).toUpperCase() }
 
                 {
                   profileDropdownVisible && (
