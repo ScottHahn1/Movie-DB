@@ -18,18 +18,21 @@ import NowPlaying from "./pages/NowPlaying";
 import TopRated from './pages/TopRated';
 import Upcoming from './pages/Upcoming';
 import Footer from "./components/Footer";
+import useAuth from "./hooks/useAuth";
 
 function App() {
   const [searched, setSearched] = useState('');
 
+  const { user, setUser, loggedIn, setLoggedIn } = useAuth();
+
   return (
     <div className='app'>
       <BrowserRouter>
-        <Navbar />
+        <Navbar loggedIn={loggedIn} setLoggedIn={setLoggedIn} user={user} setUser={setUser} />
 
         <Routes>
           <Route path='/register' element={ <Register /> } />
-          <Route path='/login' element={ <Login /> } />
+          <Route path='/login' element={ <Login setUser={setUser} setLoggedIn={setLoggedIn}  /> } />
       
           <Route index element={<Home searched={searched} setSearched={setSearched} />} />
           
