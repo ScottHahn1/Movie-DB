@@ -16,7 +16,7 @@ const handleLogin = (navigate: NavigateFunction) => {
 
 const handleLogout = async (setLoggedIn: Dispatch<SetStateAction<boolean>>, setUser: Dispatch<SetStateAction<User | null>>) => {
   try {
-    await axios.post('http://localhost:8888/users/logout', {}, { withCredentials: true });
+    await axios.post('https://movie-db-omega-ten.vercel.app/users/logout', {}, { withCredentials: true });
     setLoggedIn(false);
     setUser(null);
     alert('Successfully logged out.');
