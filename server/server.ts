@@ -8,20 +8,23 @@ import searchRouter from "./routes/search";
 import favouritesRouter from "./routes/favourites";
 import ratingsRouter from "./routes/ratings";
 import tvRouter from "./routes/tv";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 8888;
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 app.use(cors({
   origin: ['https://movie-db-frontend-psi.vercel.app', 'http://localhost:3000'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   methods: ['POST', 'GET', 'PUT', 'DELETE'],
   credentials: true,
 }));
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 app.use('/users', usersRouter);
 app.use('/movies', moviesRouter);
