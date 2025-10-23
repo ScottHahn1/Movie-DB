@@ -75,10 +75,19 @@ usersRouter.post('/login', (req, res) => {
                 }
                 
                 if (match) {
-                    const id = result[0].userId;
-                    const token = jwt.sign({ id }, 'jwtSecretKey', { expiresIn: 3600 })
-                    return res.json({ login: true, token, result, id, username });
+                    const userId = result[0].userId;
+                    const token = jwt.sign({ userId, username }, process.env.TOKEN_SECRET!, { expiresIn: '1d' });
+
+                    res.cookie('token', token, {
+                        httpOnly: true,
+                        secure: true,
+                        sameSite: 'none',
+                        maxAge: 24 * 60 * 60 * 1000
+                    })
+
+                    return res.json({ login: true, userId, username });
                 }
+
                 return res.json({ login: false });
             })
         } else {
