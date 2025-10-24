@@ -96,6 +96,32 @@ usersRouter.post('/login', (req, res) => {
                 message: 'Invalid username or password.'
             });
         }
+});
+});
+
+//logout
+usersRouter.post('/logout', (req, res) => {
+    res.clearCookie('token', {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none'
+    });
+
+    return res.json({ message: 'Logged out' });
+});
+
+interface AuthenticatedRequest extends Request {
+  user?: {
+    userId: number;
+    username: string;
+  };
+}
+
+//verify user
+usersRouter.get('/verify', authenticate, (req: AuthenticatedRequest, res) => {
+    return res.json({
+        loggedIn: true,
+        user: req.user
     })
 })
 
