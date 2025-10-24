@@ -2,42 +2,12 @@ import { Router } from "express";
 import pool from "../config/database";
 import bcrypt from 'bcrypt';
 import jwt from "jsonwebtoken";
+import authenticate from "../config/authToken";
+import { Request } from "express";
 
 const salt = 10;
 
 const usersRouter = Router();
-
-// get user by username
-usersRouter.get('/:username', async (req, res) => {
-    pool.getConnection((err: any, connection: any) => {
-        if (err) {
-            console.log(err);
-            res.send({
-                success: false,
-                statusCode: 500,
-                message: 'Error encountered during connection'
-            })
-            return;
-        }
-        connection.query('SELECT * FROM users WHERE username=?', [req.params.username], (err: any, rows: any) => {
-            if (err) {
-                connection.release();
-                return res.send({
-                    success: false,
-                    statusCode: 400
-                })
-            }
-
-            res.send({
-                message: 'Success',
-                statusCode: 200,
-                data: rows[0]
-            })
-
-            connection.release();
-        })
-    }) 
-})
 
 //register 
 usersRouter.post('/register', (req, res) => {
@@ -96,7 +66,7 @@ usersRouter.post('/login', (req, res) => {
                 message: 'Invalid username or password.'
             });
         }
-});
+    });
 });
 
 //logout
@@ -123,6 +93,6 @@ usersRouter.get('/verify', authenticate, (req: AuthenticatedRequest, res) => {
         loggedIn: true,
         user: req.user
     })
-})
+});
 
 export default usersRouter;
