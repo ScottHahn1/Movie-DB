@@ -1,4 +1,4 @@
-import useAxios from '../components/useAxios';
+import useAxios from '../hooks/useAxios';
 import '../styles/Details.css';
 import '../styles/Credits.css';
 import { CreditsResponse } from '../typeAliases/Credits';

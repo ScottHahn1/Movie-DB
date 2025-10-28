@@ -1,4 +1,4 @@
-import useAxios from "../components/useAxios";
+import useAxios from "../hooks/useAxios";
 import '../styles/Person.css';
 import { Credits, Details } from "../typeAliases/Person";
 import { Link, useParams } from "react-router-dom";

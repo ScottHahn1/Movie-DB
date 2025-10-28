@@ -1,6 +1,6 @@
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import useAxios from '../components/useAxios';
+import useAxios from '../hooks/useAxios';
 import MorePages from '../components/MorePages';
 
 type TopRatedResponse = {

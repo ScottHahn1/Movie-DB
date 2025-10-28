@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import useAxios from "../components/useAxios";
+import useAxios from "../hooks/useAxios";
 import '../styles/People.css';
 import { Link, useSearchParams } from "react-router-dom";
 import MorePages from "../components/MorePages";
