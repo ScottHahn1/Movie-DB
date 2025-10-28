@@ -1,8 +1,14 @@
 import axios from 'axios';
-import {  useState } from 'react';
+import {  Dispatch, SetStateAction, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { User } from '../hooks/useAuth';
 
-const Login = () => {
+type Props = {
+    setUser: Dispatch<SetStateAction<User | null>>
+    setLoggedIn: Dispatch<SetStateAction<boolean>>
+}
+
+const Login = ({ setUser, setLoggedIn }: Props) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
