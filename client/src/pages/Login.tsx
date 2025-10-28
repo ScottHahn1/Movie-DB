@@ -16,10 +16,14 @@ const Login = ({ setUser, setLoggedIn }: Props) => {
 
     const login = (e: React.MouseEvent<HTMLFormElement>) => {
         e.preventDefault();
-        axios.post('https://movie-db-omega-ten.vercel.app/users/login', {
+        axios.post(
+'https://movie-db-omega-ten.vercel.app/users/login',
+{
             username: username,
             password: password
-        })
+        },
+            { withCredentials: true }
+)
         .then(res => {
             if (res.data.login) {
                 sessionStorage.setItem('token', res.data.token);
