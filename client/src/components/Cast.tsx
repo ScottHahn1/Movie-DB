@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { CreditsResponse } from "../typeAliases/Credits";
-import useAxios from "./useAxios";
+import useAxios from "../hooks/useAxios";
 
 const Cast = () => {
     const { id, type } = useParams();

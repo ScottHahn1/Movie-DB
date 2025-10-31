@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import useAxios from "./useAxios";
+import useAxios from "../hooks/useAxios";
 import '../styles/Search.css';
 import SearchResults from "./SearchResults";
 import { useParams, useSearchParams } from "react-router-dom";

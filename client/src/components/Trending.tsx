@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import useAxios from './useAxios';
+import useAxios from '../hooks/useAxios';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 type TrendingResponse = {

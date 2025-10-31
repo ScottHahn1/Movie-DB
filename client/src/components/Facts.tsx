@@ -1,4 +1,4 @@
-import useAxios from "./useAxios";
+import useAxios from "../hooks/useAxios";
 import { DetailsType } from "../typeAliases/Details";
 import { useParams } from "react-router-dom";
 
