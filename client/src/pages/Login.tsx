@@ -2,6 +2,7 @@ import axios from 'axios';
 import {  Dispatch, SetStateAction, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User } from '../hooks/useAuth';
+import { API_URL } from '../config/api';
 
 type Props = {
     setUser: Dispatch<SetStateAction<User | null>>
@@ -17,7 +18,7 @@ const Login = ({ setUser, setLoggedIn }: Props) => {
     const login = (e: React.MouseEvent<HTMLFormElement>) => {
         e.preventDefault();
         axios.post(
-            'https://movie-db-omega-ten.vercel.app/users/login',
+            `${API_URL}/users/login`,
             {
                 username: username,
                 password: password
