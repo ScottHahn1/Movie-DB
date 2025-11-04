@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { API_URL } from "../config/api";
 
 export type User = {
     userId: number;
@@ -13,7 +14,7 @@ const useAuth = () => {
     useEffect(() => {
         const verifyUser = async () => {
             try {
-                const res = await axios.get('https://movie-db-omega-ten.vercel.app/users/verify', { withCredentials: true });
+                const res = await axios.get(`${API_URL}/users/verify`, { withCredentials: true });
                 setLoggedIn(true);
                 setUser(res.data.user);
             } catch {
