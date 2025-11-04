@@ -1,12 +1,14 @@
 import { Link, useParams } from "react-router-dom";
 import { CreditsResponse } from "../typeAliases/Credits";
 import useAxios from "../hooks/useAxios";
+import { API_URL } from "../config/api";
 
 const Cast = () => {
     const { id, type } = useParams();
 
     const { data: credits, loading } = useAxios<CreditsResponse, {}>(
-        `https://movie-db-omega-ten.vercel.app/movies/credits/${type}/${id}`, 
+        // `https://movie-db-omega-ten.vercel.app/movies/credits/${type}/${id}`, 
+        `${API_URL}/movies/credits/${type}/${id}`, 
         {}
     );
 

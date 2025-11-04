@@ -4,6 +4,7 @@ import '../styles/Search.css';
 import SearchResults from "./SearchResults";
 import { useParams, useSearchParams } from "react-router-dom";
 import MorePages from "./MorePages";
+import { API_URL } from "../config/api";
 
 type Params = { 
     query?: string,
@@ -45,15 +46,15 @@ const Search = () => {
     };
 
     const { data: movies, loading: moviesLoading } = useAxios<SearchResponse, Params>(
-        `https://movie-db-omega-ten.vercel.app/search/movies`, params
+        `${API_URL}/search/movies`, params
     );
     
     const { data: shows, loading: showsLoading } = useAxios<SearchResponse, Params>(
-        `https://movie-db-omega-ten.vercel.app/search/shows`, params
+        `${API_URL}/search/shows`, params
     );
     
     const { data: people, loading: peopleLoading } = useAxios<SearchResponse, Params>(
-        `https://movie-db-omega-ten.vercel.app/search/people`, params
+        `${API_URL}/search/people`, params
     );
 
     useEffect(() => {

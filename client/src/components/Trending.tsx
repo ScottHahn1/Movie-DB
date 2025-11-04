@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import useAxios from '../hooks/useAxios';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { API_URL } from '../config/api';
 
 type TrendingResponse = {
     results: {
@@ -27,7 +28,7 @@ const Trending = ({ setTrendingLoading }: Props) => {
     const [mediaType, setMediaType] = useState('movie');
 
     const { data: trending, loading, error } = useAxios<TrendingResponse, { page: number, mediaType: string }>(
-        'https://movie-db-omega-ten.vercel.app/movies/trending', 
+        `${API_URL}/movies/trending`, 
         { page: 1, mediaType }
     );
 

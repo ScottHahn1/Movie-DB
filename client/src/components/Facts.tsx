@@ -1,3 +1,4 @@
+import { API_URL } from "../config/api";
 import useAxios from "../hooks/useAxios";
 import { DetailsType } from "../typeAliases/Details";
 import { useParams } from "react-router-dom";
@@ -6,7 +7,7 @@ const Facts = () => {
     const { id, type } = useParams();
 
     const { data, loading } = useAxios<DetailsType, {}>(
-        `https://movie-db-omega-ten.vercel.app/movies/details/${type}/${id}`, 
+        `${API_URL}/movies/details/${type}/${id}`, 
         {}
     );
 

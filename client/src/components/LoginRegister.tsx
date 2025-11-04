@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { useNavigate, Link, NavigateFunction } from "react-router-dom";
 import { User } from "../hooks/useAuth";
 import axios from "axios";
+import { API_URL } from "../config/api";
 
 type Props = {
   loggedIn: boolean,
@@ -17,7 +18,7 @@ const handleLogin = (navigate: NavigateFunction) => {
 const handleLogout = async (setLoggedIn: Dispatch<SetStateAction<boolean>>, setUser: Dispatch<SetStateAction<User | null>>) => {
   try {
     await axios.post(
-      'https://movie-db-omega-ten.vercel.app/users/logout', 
+      `${API_URL}/users/logout`, 
       {}, 
       { withCredentials: true }
     );

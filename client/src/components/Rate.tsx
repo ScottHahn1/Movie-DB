@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import '../styles/Ratings.css';
+import { API_URL } from '../config/api';
 
 type Props = {
     id: number, 
@@ -19,7 +20,7 @@ export const Rate = ({ id, title, media_type, release_date, poster_path, vote_av
     const [newRating, setNewRating] = useState<number | null>(null);
 
     const addMovieRating = (mediaId: number, title: string, mediaType: string, releaseDate: string, posterPath: string, voteAverage: number, overview: string, runtime: number, rating: number) => {
-        axios.post(`https://movie-db-omega-ten.vercel.app/ratings/add`, {
+        axios.post(`${API_URL}/ratings/add`, {
             userId: sessionStorage.getItem('userId'),
             mediaId: mediaId,
             mediaType: mediaType,
@@ -38,7 +39,7 @@ export const Rate = ({ id, title, media_type, release_date, poster_path, vote_av
     }
 
     const getRating = () => {
-        axios.get(`https://movie-db-omega-ten.vercel.app/ratings/${id}`, {
+        axios.get(`${API_URL}/ratings/${id}`, {
             params: { userId: sessionStorage.getItem('userId') }
         })
         .then(res => {
@@ -52,7 +53,7 @@ export const Rate = ({ id, title, media_type, release_date, poster_path, vote_av
     const updateRating = (newRating: number) => {
         axios({
             method: 'PUT',
-            url: `https://movie-db-omega-ten.vercel.app/ratings/update/${id}`,
+            url: `${API_URL}/ratings/update/${id}`,
             params: { 
                 userId: sessionStorage.getItem('userId'),
                 rating: newRating
