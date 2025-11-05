@@ -49,63 +49,22 @@ const Details = ({ user }: Props) => {
     }
 
     useEffect(() => {
-        sessionStorage.getItem('userId') && 
-        !detailsLoading && 
-        details &&
-        checkIfFavourited(details.id);
-    }, [details])
-
-    const addMovieToFavourites = async (mediaId: number, title: string, releaseDate: string, posterPath: string, voteAverage: number, overview: string, runtime?: number) => {
-        await axios.post('https://movie-db-omega-ten.vercel.app/favourites/add', {
-            userId: sessionStorage.getItem('userId'),
-            mediaId: mediaId,
-            title: title,
-            releaseDate: releaseDate,
-            posterPath: posterPath,
-            overview: overview,
-            voteAverage: voteAverage,
-            runtime: runtime,
-            mediaType: type
-        });
-        setIsFavourited(true);
-    }
-
-    const handleFavouriteClick = () => {
-        if (sessionStorage.getItem('token')) {
-            if (isFavourited) {
-                if (details)
-                deleteMovie(details.id);
-            } else {
-                if (type === 'movie') {
-                    if (details)
-                    addMovieToFavourites(details.id, details.title, details.release_date, details.poster_path, details.vote_average, details.overview, details.runtime) 
-                } else {
-                    if (details)
-                    addMovieToFavourites(details.id, details.name, details.first_air_date, details.poster_path, details.vote_average, details.overview)
+        if (user && !detailsLoading && details) {
+            const checkIfFavourited = async () => {
+                try {
+                    const res = await axios.get(`${API_URL}/favourites/${user?.userId}/${details.id}`, {
+                        params: { mediaType: type }, 
+                        withCredentials: true
+                    });
+                    res.data.length > 0 ? setIsFavourited(true) : setIsFavourited(false);
+                } catch (err) {
+                    console.log(err);
                 }
             }
-        } else {
-            setFavouritedError(true);
-            setShowRatingsBar(false)
+
+            checkIfFavourited();
         }
-    }
-
-    const handleRateClick = () => {
-        setShowRatingsBar(!showRatingsBar);
-        setFavouritedError(false);
-    }
-
-    const deleteMovie = (id: number) => {
-        axios.delete(`https://movie-db-omega-ten.vercel.app/favourites/delete/${id}`, { 
-            params: { userId: sessionStorage.getItem('userId') } 
-        })
-        .then(res => {
-            setIsFavourited(false);
-        })
-        .catch(err => {
-            console.log(err);
-        })
-    }
+    }, [user, detailsLoading, details, type])
 
     if (detailsLoading || creditsLoading) {
         return <div className='loading' />
