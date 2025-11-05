@@ -20,11 +20,12 @@ const Details = ({ user }: Props) => {
     const { id, type } = useParams();
 
     const { data: details, loading: detailsLoading } = useAxios<DetailsType, {}>(
-        `https://movie-db-omega-ten.vercel.app/movies/details/${type}/${id}`, 
+        `${API_URL}/movies/details/${type}/${id}`, 
         {}
     );
+
     const { data: credits, loading: creditsLoading } = useAxios<CreditsResponse, {}>(
-        `https://movie-db-omega-ten.vercel.app/movies/credits/${type}/${id}`, 
+        `${API_URL}/movies/credits/${type}/${id}`, 
         {}
     );
 
