@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import useAxios from '../components/useAxios';
+import useAxios from '../hooks/useAxios';
 import '../styles/Details.css';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
@@ -8,8 +8,15 @@ import { CreditsResponse } from '../typeAliases/Credits';
 import { Rate } from '../components/Rate';
 import Cast from '../components/Cast';
 import Facts from '../components/Facts';
+import { User } from '../hooks/useAuth';
+import { API_URL } from '../config/api';
+import FavouritesAndRating from '../components/FavouritesAndRating';
 
-const Details = () => {
+type Props = {
+    user: User | null
+}
+
+const Details = ({ user }: Props) => {
     const { id, type } = useParams();
 
     const { data: details, loading: detailsLoading } = useAxios<DetailsType, {}>(
