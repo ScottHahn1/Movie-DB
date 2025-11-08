@@ -97,14 +97,25 @@ const Details = ({ user }: Props) => {
                         </div>
                         
                         <div className='movie-info'>
-                            <p>{type === 'movie' ? details.release_date : details.first_air_date} &#x2022;</p> &nbsp;
-                            <p>{ details.genres.length && details.genres.map(genre => genre.name).join(', ') } {type === 'movie' && <>&#x2022;</>} </p> &nbsp;
+                            <p>
+                                { type === 'movie' ? details.release_date : details.first_air_date } 
+                                &#x2022;
+                            </p> 
+                            &nbsp;
+                            <p>
+                                { 
+                                    details.genres.length && 
+                                    details.genres.map(genre => genre.name).join(', ') } {type === 'movie' && 
+                                    <>&#x2022;</>
+                                } 
+                            </p> 
+                            &nbsp;
                             {type === 'movie' && <p>{ details.runtime } Minutes</p>}
                         </div>
 
                         <div className='overview'>
                             <h4>Overview</h4>
-                            <p>{ details.overview }</p>
+                            <p>{details.overview}</p>
                         </div>
 
                         <div className='favourite-rate-container'>
