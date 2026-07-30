@@ -1,12 +1,14 @@
 import { useNavigate } from "react-router-dom";
-import useAxios from "../components/useAxios";
+import useAxios from "../hooks/useAxios";
 import '../styles/Favourites.css';
-import { Dispatch, SetStateAction, useState } from "react";
-import { Clicked } from "../App";
+import { useState } from "react";
 import axios from "axios";
+import { User } from "../hooks/useAuth";
+import { API_URL } from "../config/api";
+import noImgFound from '../assets/images/no-image-found.jpg';
 
 type Params = { 
-    userId: string | number,
+    userId: string | number | undefined,
     mediaType: string
 }
 
@@ -23,28 +25,34 @@ type Movies = {
     name: string,
 }[]
 
-const Favourites = ({ setClicked }: { setClicked: Dispatch<SetStateAction<Clicked>> }) => {
+type Props = {
+    user: User | null
+}
+
+const Favourites = ({ user }: Props) => {
     const [mediaType, setMediaType] = useState('movie');
     const [rerender, setRerender] = useState(false);
 
-    const noImgFound = require('../assets/images/no-image-found.jpg');
-
     const params = {
-        userId: sessionStorage.getItem('userId')!,
+        userId: user?.userId,
         mediaType: mediaType
     }
-    const { data, loading } = useAxios<Movies, Params>(`https://movie-db-omega-ten.vercel.app/favourites`, {} as Movies, params, mediaType, rerender);
+
+    const { data, loading } = useAxios<Movies, Params>(
+        `${API_URL}/favourites`, 
+        params, 
+        true
+    );
 
     const navigate = useNavigate();
     
     const deleteFromFavourites = (id: number) => {
-        axios.delete(`https://movie-db-omega-ten.vercel.app/favourites/delete/${id}`, { 
+        axios.delete(`${API_URL}/favourites/delete/${id}`, { 
             params: { 
-                userId: sessionStorage.getItem('userId')
+                userId: user?.userId
             } 
         })
         .then(res => {
-            console.log(res);
             setRerender(!rerender);
         })
         .catch(err => {
@@ -52,66 +60,85 @@ const Favourites = ({ setClicked }: { setClicked: Dispatch<SetStateAction<Clicke
         })
     }
 
+    if (loading) {
+        return <div className='loading' />
+    }
+
+    if (!data || data.length === 0) {
+        return (
+            <div className='favourites'>
+                <h2>No favourites to return.</h2>
+            </div>
+        )
+    }
+
     return (
-        <div>
+        <div className='favourites'>
+            <div className='heading-buttons'>
+                <h2>
+                    { user?.username }'s Favourites
+                </h2>
+
+                <button 
+                    style={{ backgroundColor: mediaType === 'movie' ? 'blue' : 'white' }} 
+                    onClick={() => setMediaType('movie')}
+                >
+                    Movies
+                </button>
+
+                <button 
+                    style={{ backgroundColor: mediaType === 'movie' ? 'white' : 'blue' }} 
+                    onClick={() => setMediaType('tv')}
+                >
+                    TV Shows
+                </button>
+            </div>
+            
             {
-                !loading && (
-                    <div className={ data.length > 0 ? 'favourites-margin' : 'favourites' }>
-                        <div className='heading-buttons'>
-                            <h2>{ sessionStorage.getItem('username') }'s Favourites</h2>
-                            <button style={{ backgroundColor: mediaType === 'movie' ? 'blue' : 'white' }} onClick={() => setMediaType('movie')}>Movies</button>
-                            <button style={{ backgroundColor: mediaType === 'movie' ? 'white' : 'blue' }} onClick={() => setMediaType('tv')}>TV Shows</button>
+                data.map(item => (
+                    <div className='saved-movie'>
+                        <div>
+                            <img onClick={() => {
+                                    navigate('/details');
+                                }}  
+                                src={ item.posterPath ? `https://image.tmdb.org/t/p/w300/${item.posterPath}` : noImgFound } alt={item.title} 
+                            />
                         </div>
-                        {
-                            data.map(item => (
-                                <div className='saved-movie'>
-                                    <div>
-                                        <img onClick={() => {
-                                                setClicked({ id: item.mediaId, type: item.mediaType });
-                                                navigate('/details');
-                                            }}  
-                                            src={ item.posterPath ? `https://image.tmdb.org/t/p/w300/${item.posterPath}` : noImgFound } alt={item.title} 
-                                        />
-                                    </div>
-                                    
-                                    <div>
-                                        <div className='title-rating'>
-                                            <h4 
-                                                className='pointer'
-                                                onClick={() => {
-                                                    setClicked({ id: item.mediaId, type: item.mediaType });
-                                                    navigate('/details');
-                                                }} 
-                                                >
-                                                    { item.title }
-                                            </h4>
-                                            <div className='rating' 
-                                                style={{
-                                                    borderColor: (item.voteAverage < 4.1) ? 'red' :
-                                                    (item.voteAverage > 4 && item.voteAverage < 6.1) ? 'yellow' :
-                                                    (item.voteAverage > 6 && item.voteAverage < 7.1) ? 'orange' :
-                                                    'green' 
-                                                }}
-                                            >
-                                                <b>{ Math.ceil(item.voteAverage * 10) }%</b>
-                                            </div>
-                                        </div>
-
-                                        { new Date(item.releaseDate).toString().slice(4, 15) } &nbsp; &#x2022; &nbsp;
-                                        { mediaType === 'movie' && `${item.runtime} minutes` } 
-                                        <p>{ item.overview }</p>
-
-                                        <div>
-                                            <div className='pointer' onClick={() => deleteFromFavourites(item.id)}>
-                                                <p>Remove</p>
-                                            </div>
-                                        </div>
-                                    </div>
+                        
+                        <div>
+                            <div className='title-rating'>
+                                <h4 
+                                    className='pointer'
+                                    onClick={() => {
+                                        navigate('/details');
+                                    }} 
+                                    >
+                                        {item.title}
+                                </h4>
+                                <div className='rating' 
+                                    style={{
+                                        borderColor: (item.voteAverage < 4.1) ? 'red' :
+                                        (item.voteAverage > 4 && item.voteAverage < 6.1) ? 'yellow' :
+                                        (item.voteAverage > 6 && item.voteAverage < 7.1) ? 'orange' :
+                                        'green' 
+                                    }}
+                                >
+                                    <b>{ Math.ceil(item.voteAverage * 10) }%</b>
                                 </div>
-                            ))
-                        }
+                            </div>
+
+                            { new Date(item.releaseDate).toString().slice(4, 15) } &nbsp; &#x2022; &nbsp;
+                            { mediaType === 'movie' && `${item.runtime} minutes` } 
+                            <p>{ item.overview }</p>
+
+                            <div>
+                                <div className='pointer' onClick={() => deleteFromFavourites(item.id)}>
+                                    <p>Remove</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                )
+                ))
             }
         </div>
     )
