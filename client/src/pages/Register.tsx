@@ -12,6 +12,11 @@ const Register = () => {
 
     const signUp = (e: React.FormEvent<HTMLElement>) => {
         e.preventDefault();
+
+        if (!password || !confirmPassword) {
+            return;
+        }
+
         if (password === confirmPassword) {
             axios.post('https://movie-db-omega-ten.vercel.app/users/register', {
                 username: username,
@@ -20,11 +25,10 @@ const Register = () => {
                 if (res.data.registered) {
                     navigate('/login');
                 } else {
-                    alert('Register Failed');
+                    alert(res.data.sqlMessage)
                 }
-                console.log(res)
-            }).catch(err => {
-                console.log(err);
+            }).catch(() => {
+                alert(`We're having trouble connecting to the server. Please try again later`);
             })
         } else {
             setPasswordsMatch(false);
@@ -37,13 +41,13 @@ const Register = () => {
 
             <form onSubmit={signUp}>
                 <label> Username <br></br>
-                    <input className='form-input' type='text' value={username} onChange={ e => setUsername(e.target.value) } />
+                    <input className='form-input' required type='text' value={username} onChange={ e => setUsername(e.target.value) } />
                 </label>
                 <label> Password <br></br>
-                    <input className='form-input' type='text' value={password} onChange={ e => setPassword(e.target.value) } />
+                    <input className='form-input' required type='text' value={password} onChange={ e => setPassword(e.target.value) } />
                 </label>
                 <label> Confirm Password <br></br>
-                    <input className='form-input' type='text' value={confirmPassword} onChange={ e => setConfirmPassword(e.target.value) } />
+                    <input className='form-input' required type='text' value={confirmPassword} onChange={ e => setConfirmPassword(e.target.value) } />
                 </label>
                 <button type='submit'>Sign Up</button>
             </form>

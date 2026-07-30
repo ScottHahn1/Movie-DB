@@ -1,30 +1,40 @@
 import axios from 'axios';
-import {  useState } from 'react';
+import {  Dispatch, SetStateAction, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { User } from '../hooks/useAuth';
+import { API_URL } from '../config/api';
 
-const Login = () => {
+type Props = {
+    setUser: Dispatch<SetStateAction<User | null>>
+    setLoggedIn: Dispatch<SetStateAction<boolean>>
+}
+
+const Login = ({ setUser, setLoggedIn }: Props) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    const naviagte = useNavigate();
+    const navigate = useNavigate();
 
     const login = (e: React.MouseEvent<HTMLFormElement>) => {
         e.preventDefault();
-        axios.post('https://movie-db-omega-ten.vercel.app/users/login', {
-            username: username,
-            password: password
-        })
+        axios.post(
+            `${API_URL}/users/login`,
+            {
+                username: username,
+                password: password
+            },
+            { withCredentials: true }
+        )   
         .then(res => {
             if (res.data.login) {
-                sessionStorage.setItem('token', res.data.token);
-                sessionStorage.setItem('userId', res.data.id);
-                sessionStorage.setItem('username', res.data.username);
-                naviagte('/');
+                setUser(res.data);
+                setLoggedIn(true);
+                navigate('/');
             } else {
-                alert('Login failed');
+                alert(res.data.message);
             }
-        }).catch(err => {
-            console.log(err);
+        }).catch(() => {
+            alert(`We're having trouble connecting to the server. Please try again later`);
         })
     }
 
@@ -34,11 +44,13 @@ const Login = () => {
 
             <form onSubmit={login}>
                 <label> Username <br></br>
-                    <input className='form-input' type='text' value={username} onChange={ e => setUsername(e.target.value) } />
+                    <input className='form-input' required type='text' value={username} onChange={ e => setUsername(e.target.value) } />
                 </label>
+
                 <label> Password <br></br>
-                    <input className='form-input' type='text' value={password} onChange={ e => setPassword(e.target.value) } />
+                    <input className='form-input' required type='text' value={password} onChange={ e => setPassword(e.target.value) } />
                 </label>
+
                 <button type='submit'>Login</button>
             </form>
         </div>

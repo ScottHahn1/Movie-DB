@@ -1,4 +1,4 @@
-export type CreditsType = {
+export type CreditsResponse = {
     cast: {
         cast_id: number,
         character: string,

@@ -1,29 +1,24 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
-const authenticate: any = (req: Request, res: Response, next: NextFunction) => {
-    const token = req.headers.authorization;
-    if (!token) {
-        res.send({
-            success: false,
-            statusCode: 401,
-            message: 'Invalid token'
-        })
-    } else {
-        const tokenSecret = 'my-token-secret';
-        jwt.verify(token.split(' ')[1], tokenSecret, (err: any, value: any) => {
-            if (err) {
-                res.send({
-                    success: false,
-                    statusCode: 401,
-                    message: 'Invalid token'
-                })
-            } else {
-                (<any>req).user = value.data;
-                console.log((<any>req).user);
-                next();
-            }
-        })
+interface AuthenticatedRequest extends Request {
+  user?: {
+    userId: number;
+    username: string;
+  };
+}
+
+const authenticate = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+    const token = req.cookies.token;
+
+    if (!token) return res.status(401).json({ message: 'No token' });
+
+    try {
+        const decoded = jwt.verify(token, process.env.TOKEN_SECRET!);
+        req.user = decoded as { userId: number, username: string };
+        next();
+    } catch {
+        return res.status(403).json({ message: 'Invalid token' });
     }
 } 
 

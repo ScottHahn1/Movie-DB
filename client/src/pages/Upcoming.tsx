@@ -1,9 +1,9 @@
-import { Link } from 'react-router-dom';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { Clicked } from '../App';
-import useAxios from '../components/useAxios';
+import { Link, useSearchParams } from 'react-router-dom';
+import useAxios from '../hooks/useAxios';
+import MorePages from '../components/MorePages';
+import { useEffect, useState } from 'react';
 
-type InitialState = {
+type UpcomingResponse = {
     results: {
         backdrop_path: 'string',
         genre_ids: [],
@@ -21,76 +21,87 @@ type InitialState = {
     total_results: number
 }
 
-const Upcoming = ({ setClicked }: { setClicked: Dispatch<SetStateAction<Clicked>> }) => {
-    const [pageNum, setPageNum] = useState(1);
+const Upcoming = () => {
     const [totalPages, setTotalPages] = useState(0);
-    const { data, loading } = useAxios<InitialState, {page: number}>('https://movie-db-omega-ten.vercel.app/movies/upcoming', {} as InitialState, { page: pageNum }, pageNum);
+
+    const [searchParams, setSearchParams] = useSearchParams();
+    const page = Number(searchParams.get('page')) || 1;
+
+    const { data, loading, error } = useAxios<UpcomingResponse, { page: number }>(
+        'https://movie-db-omega-ten.vercel.app/movies/upcoming', 
+        { page }
+    );
 
     const noImgFound = require('../assets/images/no-image-found.jpg');
 
     useEffect(() => {
-        data && setTotalPages(data.total_pages);
-        data && data.total_pages < 500 && setTotalPages(data.total_pages);
+        if (!data) return;
+        setTotalPages(Math.min(data.total_pages, 500));
     }, [data])
-    
-    useEffect(() => {
-        totalPages && totalPages > 500 && setTotalPages(500);
-    }, [totalPages])
+
+    const goToPage = (newPage: number) => {
+        searchParams.set('page', newPage.toString());
+        setSearchParams(searchParams);
+    }
+
+    if (loading) {
+        return <div className='loading' />
+    }
 
     return (
-        <div>
+        <div className='data-container'>
+            <h2>Upcoming Movies</h2>
+
             {
-                !loading ? (
-                    <div className='data-container'>
-                        <h2>Upcoming Movies</h2>
+                error ?
+                <div className='error'>Error loading upcoming movies.</div>
+                :
+                (!data || !data.results) && 
+                <div className='error'>No upcoming movies available.</div>
+            }
 
-                        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                            {
-                                data.results && data.results.map((movie, index) => (
-                                    <div key={ index } className='data'>
-                                        <Link to='/details'>
-                                            <img 
-                                                src={ movie.poster_path ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}` : noImgFound } 
-                                                onClick={() => setClicked({ id: movie.id, type: 'movie' })}
-                                                alt={movie.title}
-                                            />
-                                        </Link>
-                                        <h5>{ movie.title }</h5>
-                                        <p> { movie.release_date }</p>
-                                    </div>
-                                ))
-                            }
+            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                {
+                    data?.results?.map(movie => (
+                        <div key={movie.id} className='data'>
+                            <Link to={`/details/movie/${movie.id}/${movie.title?.replace(/\s+/g, '-')}`}>
+                                <img
+                                    src={ movie.poster_path ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}` : noImgFound } 
+                                    alt={movie.title}
+                                />
+                            </Link>
+
+                            <h5>{movie.title}</h5>
+                            <p>{movie.release_date}</p>
                         </div>
+                    ))
+                }
+            </div>
 
-                        <div className='next'>
-                            {
-                                pageNum > 2 && (
-                                    <button onClick={() => setPageNum(prev => prev - 2)}>{ pageNum - 2 }</button>
-                                )
-                            }
+            {
+                data?.results && (
+                    <div className='pages'>
+                        {
+                            page !== 1 &&
+                            <button onClick={() => goToPage(Math.max(page - 1, 1))}>
+                                Previous
+                            </button>
+                        }
 
-                            {
-                                pageNum > 1 && (
-                                    <button onClick={() => setPageNum(prev => prev - 1)}>{ pageNum - 1 }</button>
-                                )
-                            }
+                        <MorePages 
+                            currentPage={page} 
+                            setSearchParams={setSearchParams} 
+                            totalPages={totalPages} 
+                        />
 
-                            { pageNum < totalPages && <button>{ pageNum }</button> }
-
-                            { pageNum + 1 < totalPages && <button onClick={() => setPageNum(prev => prev + 1)}>{ pageNum + 1 }</button> }
-                            { pageNum + 2 < totalPages && <button onClick={() => setPageNum(prev => prev + 2)}>{ pageNum + 2 }</button> }
-                            { pageNum + 3 < totalPages && <button onClick={() => setPageNum(prev => prev + 3)}>{ pageNum + 3 }</button> }
-                            { pageNum + 4 < totalPages && <button onClick={() => setPageNum(prev => prev + 4)}>{ pageNum + 4 }</button> }
-                            ...
-                            <button onClick={() => setPageNum(500)}>{ totalPages }</button> 
-                            { pageNum < totalPages && <button onClick={() => setPageNum(prev => prev + 1)}>Next</button> }
-                        </div>
-
+                        {
+                            totalPages && page !== totalPages &&
+                            <button onClick={() => goToPage(totalPages ? Math.min(page + 1, totalPages) : page + 1)}>
+                                Next
+                            </button>
+                        }
                     </div>
                 )
-                :
-                <div className='loading'>
-                </div>
             }
         </div>
     )

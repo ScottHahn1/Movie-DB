@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
-import useAxios from './useAxios';
-import { Dispatch, SetStateAction, useState } from 'react';
-import { Clicked } from '../App';
+import useAxios from '../hooks/useAxios';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { API_URL } from '../config/api';
+import noImgFound from '../assets/images/no-image-found.jpg';
 
-type InitialState = {
+type TrendingResponse = {
     results: {
         backdrop_path: 'string',
         genre_ids: [],
@@ -20,61 +21,92 @@ type InitialState = {
     }[]
 }
 
-const Trending = ({ url, setClicked }: { url: string, setClicked: Dispatch<SetStateAction<Clicked>> }) => {
-    const [mediaType, setMediaType] = useState('movie');
-    const { data, loading } = useAxios<InitialState, {page: number, mediaType: string}>(url, {} as InitialState, { page: 1, mediaType: mediaType }, mediaType);
+type Props = {
+    setTrendingLoading: Dispatch<SetStateAction<boolean>>
+}
 
-    const noImgFound = require('../assets/images/no-image-found.jpg');
+const Trending = ({ setTrendingLoading }: Props) => {
+    const [mediaType, setMediaType] = useState('movie');
+
+    const { data: trending, loading, error } = useAxios<TrendingResponse, { page: number, mediaType: string }>(
+        `${API_URL}/movies/trending`, 
+        { page: 1, mediaType }
+    );
+
+    useEffect(() => {
+        if (!loading) {
+            setTrendingLoading(true);
+        }
+    }, [loading, setTrendingLoading])
+
+    if (loading) {
+        return <div className='loading' />
+    }
 
     return (
         <div>
-            { 
-                !loading ? (
-                    <div className='data-container'>
-                        <div className='heading-buttons'>
-                            <h2>Trending</h2>
-                            <button style={{ backgroundColor: mediaType === 'movie' ? 'rgb(142, 233, 142)' : 'white' }} onClick={() => setMediaType('movie')}>Movies</button>
-                            <button style={{ backgroundColor: mediaType === 'movie' ? 'white' : 'rgb(142, 233, 142)' }} onClick={() => setMediaType('tv')}>TV Shows</button>
-                        </div>
-                        <br></br>
-                        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                        {
-                            mediaType === 'movie' ?
-                            data.results && data.results.map((movie, index) => (
-                                <div key={ index } className='data'>
-                                    <Link to='/details'>
-                                        <img 
-                                            src={ movie.poster_path ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}` : noImgFound } 
-                                            onClick={() => setClicked({ id: movie.id, type: 'movie' })}
-                                            alt={movie.title}
-                                        />
-                                    </Link>
-                                    <h5>{ movie.title }</h5>
-                                    <p>{ movie.release_date }</p>
-                                </div>
-                            ))
-                            :
-                            data.results && data.results.map((show, index) => (
-                                <div key={ index } className='data'>
-                                    <Link to='/details'>
-                                        <img 
-                                            src={ show.poster_path ? `https://image.tmdb.org/t/p/w500/${show.poster_path}` : noImgFound } 
-                                            onClick={() => setClicked({ id: show.id, type: 'tv' })}
-                                            alt={show.title}
-                                        />
-                                    </Link>
-                                    <h5>{ show.name }</h5>
-                                    <p>{ show.first_air_date }</p>
-                                </div>
-                            ))                
-                        }
-                        </div>
-                    </div>
-                )
-                :
-                <div className='loading'>
+            <div className='data-container'>
+                <div className='heading-buttons'>
+                    <h2>Trending</h2>
+
+                    <button 
+                        style={{ backgroundColor: mediaType === 'movie' ? 'rgb(142, 233, 142)' : 'white' }} 
+                        onClick={() => setMediaType('movie')}
+                    >
+                        Movies
+                    </button>
+
+                    <button 
+                        style={{ backgroundColor: mediaType === 'movie' ? 'white' : 'rgb(142, 233, 142)' }} 
+                        onClick={() => setMediaType('tv')}
+                    >
+                        TV Shows
+                    </button>
                 </div>
-            }
+
+                {
+                    error ? 
+                    <div className='error'>Error loading trending {mediaType === 'movie' ? 'movies' : 'TV shows'}.</div>
+                    :
+                    (!trending || !trending.results) && 
+                    <div className='error'>No trending {mediaType === 'movie' ? 'movies' : 'TV shows'} available.</div>
+                }
+
+                <br></br>
+
+                <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                    {
+                        mediaType === 'movie' ?
+                        trending?.results?.map(movie => (
+                            <div key={movie.id} className='data'>
+                                <Link to={`/details/movie/${movie.id}/${movie.title?.replace(/\s+/g, '-')}`}>
+                                    <img 
+                                        src={movie.poster_path ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}` : noImgFound} 
+                                        alt={movie.title}
+                                    />
+                                </Link>
+
+                                <h5>{movie.title}</h5>
+                                <p>{movie.release_date}</p>
+                            </div>
+                        ))
+                        :
+                        trending?.results?.map(show => (
+                            <div key={show.id} className='data'>
+                                <Link to={`/details/tv/${show.id}/${show.name?.replace(/\s+/g, '-')}`}>
+                                    <img 
+                                        src={show.poster_path ? `https://image.tmdb.org/t/p/w500/${show.poster_path}` : noImgFound} 
+                                        alt={show.title}
+                                    />
+                                </Link>
+
+                                <h5>{show.name}</h5>
+                                <p>{show.first_air_date}</p>
+                            </div>
+                        ))                
+                    }
+                </div>
+            </div>
         </div>
     )
 }

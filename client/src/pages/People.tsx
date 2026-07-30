@@ -1,10 +1,10 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { Clicked } from "../App";
-import useAxios from "../components/useAxios";
+import { useEffect, useState } from "react";
+import useAxios from "../hooks/useAxios";
 import '../styles/People.css';
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
+import MorePages from "../components/MorePages";
 
-type People = {
+type PeopleData = {
     page: number,
     results: {
         id: number,
@@ -24,70 +24,80 @@ type People = {
     total_results: number
 }
 
-const People = ({ setClicked }: { setClicked: Dispatch<SetStateAction<Clicked>> }) => {
-    const [pageNum, setPageNum] = useState(1);
-    const { data: people, loading, error } = useAxios<People, { page: number }>('https://movie-db-omega-ten.vercel.app/people/popular', {} as People, {page: pageNum}, pageNum);
+const People = () => {
     const [totalPages, setTotalPages] = useState(0);
+
+    const [searchParams, setSearchParams] = useSearchParams();
+    const page = Number(searchParams.get('page')) || 1;
+
+    const { data: people, loading } = useAxios<PeopleData, { page: number }>(
+        'https://movie-db-omega-ten.vercel.app/people/popular', 
+        { page }
+    );
 
     const noImgFound = require('../assets/images/no-image-found.jpg');
     
     useEffect(() => {
-        people && setTotalPages(people.total_pages);
-        people && people.total_pages < 500 && setTotalPages(people.total_pages);
+        if (!people) return;
+        setTotalPages(Math.min(people.total_pages, 500))
     }, [people])
-    
-    useEffect(() => {
-        totalPages && totalPages > 500 && setTotalPages(500);
-    }, [totalPages])
 
+    const goToPage = (newPage: number) => {
+        searchParams.set('page', newPage.toString());
+        setSearchParams(searchParams);
+    }
+
+    if (loading) {
+        return <div className='loading' />
+    }
+
+    if (!people) {
+        return <div>No people to return.</div>
+    }
+    
     return (
         <div className='people-container'>
             <div className='heading'>
                 <h2>Popular People</h2>
             </div>
+
             <div className='people'>
                 {
-                    !loading && (
-                        people.results.map(person => (
-                            <div className='person' key={person.id}>
-                                <Link to='/person'>
-                                    <img 
-                                        src={ person.profile_path ? `https://image.tmdb.org/t/p/w300/${person.profile_path}` : noImgFound } 
-                                        alt={ person.name } 
-                                        onClick={ () => setClicked({ id: person.id, type: 'person' }) }
-                                    />
-                                    <h4>{ person.name }</h4>
-                                </Link>
-                                { person.known_for_department }
-                            </div>
-                        ))
-                    )
+                    people.results.map(person => (
+                        <div className='person' key={person.id}>
+                            <Link to={`/person/${person.id}/${person.name.replace(/\s+/g, '-')}`}>
+                                <img 
+                                    src={person.profile_path ? `https://image.tmdb.org/t/p/w300/${person.profile_path}` : noImgFound} 
+                                    alt={person.name} 
+                                />
+                                <h4>{person.name}</h4>
+                            </Link>
+                            { person.known_for_department }
+                        </div>
+                    ))
                 }
             </div>
 
-            <div className='next'>
+            <div className='pages' style={{ marginTop: '2rem', marginLeft: '4rem' }}>
                 {
-                    pageNum > 2 && (
-                        <button onClick={() => setPageNum(prev => prev - 2)}>{ pageNum - 2 }</button>
-                    )
+                    page !== 1 &&
+                    <button onClick={() => goToPage(Math.max(page - 1, 1))}>
+                        Previous
+                    </button>
                 }
 
+                <MorePages 
+                    currentPage={page} 
+                    setSearchParams={setSearchParams} 
+                    totalPages={totalPages} 
+                />
+
                 {
-                    pageNum > 1 && (
-                        <button onClick={() => setPageNum(prev => prev - 1)}>{ pageNum - 1 }</button>
-                    )
+                    totalPages && page !== totalPages &&
+                    <button onClick={() => goToPage(totalPages ? Math.min(page + 1, totalPages) : page + 1)}>
+                        Next
+                    </button>
                 }
-
-                { pageNum < totalPages && <button>{ pageNum }</button> }
-
-                { pageNum + 1 < totalPages && <button onClick={() => setPageNum(prev => prev + 1)}>{ pageNum + 1 }</button> }
-                { pageNum + 2 < totalPages && <button onClick={() => setPageNum(prev => prev + 2)}>{ pageNum + 2 }</button> }
-                { pageNum + 3 < totalPages && <button onClick={() => setPageNum(prev => prev + 3)}>{ pageNum + 3 }</button> }
-                { pageNum + 4 < totalPages && <button onClick={() => setPageNum(prev => prev + 4)}>{ pageNum + 4 }</button> }
-                ...
-                <button onClick={() => setPageNum(totalPages)}>{ totalPages }</button> 
-                { pageNum < totalPages && <button onClick={() => setPageNum(prev => prev + 1)}>Next</button> }
-                <h3>{pageNum}</h3>
             </div>
         </div>
     )

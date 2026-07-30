@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
-import useAxios from "../components/useAxios";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { Clicked } from "../App";
+import useAxios from "../hooks/useAxios";
+import { useState } from "react";
 import axios from "axios";
 import { Rate } from "../components/Rate";
 import '../styles/Ratings.css';
+import noImgFound from "../assets/images/no-image-found.jpg";
 
 type Params = { 
     userId: string,
@@ -25,17 +25,15 @@ type Movies = {
     runtime: number
 }[];
 
-const Ratings = ({ setClicked }: { setClicked: Dispatch<SetStateAction<Clicked>> }) => {
+const Ratings = () => {
     const [mediaType, setMediaType] = useState('movie');
     const [rerender, setRerender] = useState(false);
-
-    const noImgFound = require('../assets/images/no-image-found.jpg');
 
     const params = { 
         userId: sessionStorage.getItem('userId')!,
         mediaType: mediaType 
     };
-    const { data, loading } = useAxios<Movies, Params>(`https://movie-db-omega-ten.vercel.app/ratings`, {} as Movies, params, mediaType, rerender);
+    const { data, loading } = useAxios<Movies, Params>(`https://movie-db-omega-ten.vercel.app/ratings`, params);
 
     const navigate = useNavigate();
 
@@ -54,6 +52,10 @@ const Ratings = ({ setClicked }: { setClicked: Dispatch<SetStateAction<Clicked>>
         })
     }
 
+    if (!data) {
+        return <div>No data</div>
+    }
+
     return (
         <div>
             {
@@ -69,7 +71,7 @@ const Ratings = ({ setClicked }: { setClicked: Dispatch<SetStateAction<Clicked>>
                                 <div className='saved-movie'>
                                     <div>
                                         <img onClick={() => {
-                                                setClicked({ id: item.movieId, type: 'movie' });
+                                                // setClicked({ id: item.movieId, type: 'movie' });
                                                 navigate('/details');
                                             }}  
                                             src={ item.posterPath ? `https://image.tmdb.org/t/p/w300/${item.posterPath}` : noImgFound } alt={item.title} 
@@ -80,7 +82,7 @@ const Ratings = ({ setClicked }: { setClicked: Dispatch<SetStateAction<Clicked>>
                                             <h4 
                                                 className='pointer'
                                                 onClick={() => {
-                                                    setClicked({ id: item.movieId, type: 'movie' });
+                                                    // setClicked({ id: item.movieId, type: 'movie' });
                                                     navigate('/details');
                                                 }} 
                                                 >

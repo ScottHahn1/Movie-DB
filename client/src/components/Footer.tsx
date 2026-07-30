@@ -27,10 +27,11 @@ const Footer = () => {
         </ul>
 
         <ul className="social-media-links">
-          <a href="https://www.linkedin.com/in/scott-hahn" target="_blank" >
+          <a href="https://www.linkedin.com/in/scott-hahn" target="_blank" rel="noreferrer" >
             <li>LinkedIn &nbsp; <FontAwesomeIcon icon={faLinkedin} /></li>
           </a>
-          <a href='https://github.com/ScottHahn1' target='_blank'>
+          
+          <a href="https://github.com/ScottHahn1" target="_blank" rel="noreferrer">
             <li>GitHub &nbsp; <FontAwesomeIcon icon={faGithub}/></li>  
           </a>
         </ul>
