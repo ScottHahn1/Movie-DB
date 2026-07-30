@@ -37,16 +37,19 @@ const addMovieToFavourites = async (
 };
 
 const deleteMovie = async (
-    userId: number, 
+    user: User | null,
     id: number, 
-    setIsFavourited: Dispatch<SetStateAction<boolean>>
+    setIsFavourited?: Dispatch<SetStateAction<boolean>>
 ) => {
     try {
         await axios.delete(`${API_URL}/favourites/delete/${id}`, { 
-            params: { userId: userId },
+            params: { userId: user?.userId },
             withCredentials: true
         });
-        setIsFavourited(false);
+        
+        if (setIsFavourited) {
+            setIsFavourited(false);
+        }
     } catch (err) {
         console.log(err);
     }
@@ -64,7 +67,7 @@ const handleFavouriteClick = (
     if (user && mediaType) {
         if (isFavourited) {
             if (details) {
-                deleteMovie(user.userId, details.id, setIsFavourited);
+                deleteMovie(user, details.id, setIsFavourited);
             }
         } else {
             if (mediaType === 'movie') {
