@@ -5,12 +5,12 @@ import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { DetailsType } from '../typeAliases/Details';
 import { CreditsResponse } from '../typeAliases/Credits';
-import { Rate } from '../components/Rate';
 import Cast from '../components/Cast';
 import Facts from '../components/Facts';
 import { User } from '../hooks/useAuth';
 import { API_URL } from '../config/api';
 import FavouritesAndRating from '../components/FavouritesAndRating';
+import noImgFound from "../assets/images/no-image-found.jpg";
 
 type Props = {
     user: User | null
@@ -29,24 +29,7 @@ const Details = ({ user }: Props) => {
         {}
     );
 
-    const [showRatingsBar, setShowRatingsBar] = useState(false);
-    const [showFavouritesTooltip, setShowFavouritesTooltip] = useState(false);
-    const [showRatingsTooltip, setShowRatingsTooltip] = useState(false);
-
     const [isFavourited, setIsFavourited] = useState(false);
-    const [favouritedError, setFavouritedError] = useState(false);
-
-    const noImgFound = require('../assets/images/no-image-found.jpg');
-
-    const checkIfFavourited = (mediaId: number) => {
-        axios.get(`https://movie-db-omega-ten.vercel.app/favourites/${sessionStorage.getItem('userId')}/${mediaId}`, {
-            params: { mediaType: type }
-        })
-        .then(res => {
-            res.data.length > 0 ? setIsFavourited(true) : setIsFavourited(false);
-        })
-        .catch(err => console.log(err));
-    }
 
     useEffect(() => {
         if (user && !detailsLoading && details) {
@@ -118,86 +101,36 @@ const Details = ({ user }: Props) => {
                             <p>{details.overview}</p>
                         </div>
 
-                        <div className='favourite-rate-container'>
-                            <div onClick={handleFavouriteClick}>
-                                <div className='favourite-rate' onMouseEnter={() => setShowFavouritesTooltip(true)} onMouseLeave={() => setShowFavouritesTooltip(false)}>
-                                    { isFavourited ? <>&#9829;</> : <>&#9825;</> }
-
-                                    {
-                                        showFavouritesTooltip && (
-                                            <div className='tooltip'>
-                                                <p className='tooltip-content'>{ isFavourited ? 'Remove from favourites' : 'Add to favourites' }</p>
-                                            </div>
-                                        )
-                                    }
-                                </div>
-                            </div>
-
-                            <div className='favourite-rate' onClick={handleRateClick} onMouseEnter={() => setShowRatingsTooltip(true)} onMouseLeave={() => setShowRatingsTooltip(false)}>
-                                <span className='star'>&#9734;</span>
-                                {
-                                    showRatingsTooltip && (
-                                        <div className='tooltip'>
-                                            <p className='tooltip-content'>Add a rating</p>
-                                        </div>
-                                    )
-                                }
-                            </div>
-
-                            {
-                                sessionStorage.getItem('token') && showRatingsBar && (
-                                    <Rate 
-                                        id={details.id} 
-                                        title={type === 'movie' ? details.title : details.name} 
-                                        release_date={type === 'movie' ? details.release_date : details.first_air_date} 
-                                        poster_path={details.poster_path} 
-                                        media_type={type!}
-                                        vote_average={details.vote_average}
-                                        overview={details.overview} 
-                                        runtime={details.runtime}
-                                    />
-                                )
-                            }
-                            
-                            {
-                                !sessionStorage.getItem('token') && showRatingsBar && (
-                                    <div>
-                                        Sign in required to add ratings
-                                    </div>
-                                )
-                            }
-
-                            {
-                                favouritedError && (
-                                    <div>
-                                        Sign in required to add to favourites
-                                    </div>
-                                )
-                            }
-                        </div>
+                        <FavouritesAndRating 
+                            user={user}
+                            isFavourited={isFavourited}
+                            setIsFavourited={setIsFavourited}
+                            details={details}
+                            mediaType={type}
+                        />
 
                         {
                             type === 'movie' ? (
-                            <div>
-                                <h4>Director</h4>
-                                <p>
-                                    {
-                                        credits?.crew && 
-                                        credits.crew.length > 0 && 
-                                        credits.crew.find(person => person.job === 'Director')?.name
-                                    }
-                                </p>
-                            </div>
+                                <div>
+                                    <h4>Director</h4>
+                                    <p>
+                                        {
+                                            credits?.crew && 
+                                            credits.crew.length > 0 && 
+                                            credits.crew.find(person => person.job === 'Director')?.name
+                                        }
+                                    </p>
+                                </div>
                             )
                             :
                             (
-                            <div className='creators'>
-                                { 
-                                    details.created_by.length > 0 && details.created_by.map(creator => (
-                                        <p>{creator.name} <br></br> Creator</p>
-                                    ))
-                                }
-                            </div>
+                                <div className='creators'>
+                                    { 
+                                        details.created_by.length > 0 && details.created_by.map(creator => (
+                                            <p>{creator.name} <br></br> Creator</p>
+                                        ))
+                                    }
+                                </div>
                             )
                         }
                         
