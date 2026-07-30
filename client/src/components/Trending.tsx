@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import useAxios from '../hooks/useAxios';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { API_URL } from '../config/api';
+import noImgFound from '../assets/images/no-image-found.jpg';
 
 type TrendingResponse = {
     results: {
@@ -31,8 +32,6 @@ const Trending = ({ setTrendingLoading }: Props) => {
         `${API_URL}/movies/trending`, 
         { page: 1, mediaType }
     );
-
-    const noImgFound = require('../assets/images/no-image-found.jpg');
 
     useEffect(() => {
         if (!loading) {
