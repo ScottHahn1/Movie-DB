@@ -1,29 +1,37 @@
-.full-cast-crew {
-    width: fit-content;
-    margin-left: 1rem;
-}
-
-.full-cast-crew h3:hover {
-    color: rgb(100, 97, 97);
-}
-
 .credits-crew {
     display: flex;
-    gap: 10rem;
+    gap: 3rem;
     width: 50%;
     margin-left: 5rem;
-    animation: fade-in 1.5s linear;
     margin-top: 7rem;
+    animation: fade-in 1.5s linear;
 }
 
-.cast-member, .crew-member {
-    border: 5px solid white;
+.credits-card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 1.5rem;
+    background-color: #fff;
+}
+
+.credits-card h4 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+.cast-member,
+.crew-member {
     display: flex;
     align-items: center;
-    gap: 3%;
+    gap: 1rem;
     width: 30rem;
+    padding: 0.75rem 0;
 }
 
-.cast img, .crew img {
-    width: 5rem;
+.cast-member img,
+.crew-member img {
+    width: 8rem;
+    height: 10rem;
+    object-fit: cover;
+    border-radius: 5px;
 }
