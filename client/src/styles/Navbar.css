@@ -14,19 +14,33 @@ nav li {
 
 .dropdown {
     position: absolute;
-    background-color: whitesmoke;
-    text-align: left;
-    font-size: .9rem;
-    width: 10%;
+    min-width: 10rem;
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     z-index: 2;
+    opacity: 0;
+    transition: opacity .5s ease;
+}
+
+.dropdown-visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
 }
 
 .dropdown p, .profile-dropdown p {
-    padding: .2rem .5rem;
+    display: block;
+    padding: .6rem .9rem;
+    color: #333;
+    text-decoration: none;
+    font-size: .9rem;
 }
 
 .dropdown p:hover, .profile-dropdown p:hover {
-    background-color: rgb(233, 226, 226);
+    background-color: #f3f4f6;
+    color: #111;
 }
 
 .dropdown a {
@@ -34,23 +48,27 @@ nav li {
 }
 
 .login-register {
-    display: flex;
-    gap: .5rem;
-    justify-content: space-around;
-    position: relative;
+     display: flex;
+    gap: .75rem;
+    align-items: center;
 }
 
 .login-register button {
-    border-radius: 1rem;
-    border: none;
-    font-size: 1.1rem;
-    padding: 3px 1rem;
-    transition: background-color 1s, box-shadow .5s;
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
+    border-radius: .5rem;
+    font-size: 1rem;
+    padding: .45rem 1rem;
+    cursor: pointer;
+    transition: all .2s ease;
 }
 
 .login-register button:hover {
-    background-color: lightgreen;
-    box-shadow: white 2px 4px 2px;
+  background-color: lightgreen;
+  color: black;
+  border-color: lightgreen;
+  transform: translateY(-2px);
 }
 
 .profile {
