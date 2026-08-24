@@ -2,6 +2,7 @@ import { API_URL } from "../config/api";
 import useAxios from "../hooks/useAxios";
 import { DetailsType } from "../typeAliases/Details";
 import { useParams } from "react-router-dom";
+import { noImgFound } from "../assets/images/no-image-found.jpg";
 
 const Facts = () => {
     const { id, type } = useParams();
@@ -10,8 +11,6 @@ const Facts = () => {
         `${API_URL}/movies/details/${type}/${id}`, 
         {}
     );
-
-    const noImgFound = require('../assets/images/no-image-found.jpg');
 
     if (loading) {
         return <div className='loading' />
@@ -29,7 +28,8 @@ const Facts = () => {
                     </>
                 ) :
                     <>
-                        <p> <b>Network</b> </p>
+                        <b>Network</b>
+                        
                         <img src={ 
                             data?.networks[0]?.logo_path ? 
                             `https://image.tmdb.org/t/p/w92/${data.networks[0].logo_path}` 

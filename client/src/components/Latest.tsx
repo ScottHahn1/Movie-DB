@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import useAxios from '../hooks/useAxios';
 import { useState } from 'react';
 import { API_URL } from '../config/api';
+import { noImgFound } from "../assets/images/no-image-found.jpg";
 
 type LatestResponse = {
     results: {
@@ -49,8 +50,6 @@ const Latest = () => {
         `${API_URL}/movies/latest`,  
         params
     );
-
-    const noImgFound = require('../assets/images/no-image-found.jpg');
 
     if (loading) {
         return <div className='loading' />
