@@ -2,7 +2,7 @@ import { API_URL } from "../config/api";
 import useAxios from "../hooks/useAxios";
 import { DetailsType } from "../typeAliases/Details";
 import { useParams } from "react-router-dom";
-import { noImgFound } from "../assets/images/no-image-found.jpg";
+import noImgFound from "../assets/images/no-image-found.jpg";
 
 const Facts = () => {
     const { id, type } = useParams();

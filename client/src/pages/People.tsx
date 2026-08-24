@@ -3,7 +3,7 @@ import useAxios from "../hooks/useAxios";
 import '../styles/People.css';
 import { Link, useSearchParams } from "react-router-dom";
 import MorePages from "../components/MorePages";
-import { noImgFound } from "../assets/images/no-image-found.jpg";
+import noImgFound from "../assets/images/no-image-found.jpg";
 
 type PeopleData = {
     page: number,

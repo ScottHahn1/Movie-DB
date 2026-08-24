@@ -3,7 +3,7 @@ import '../styles/Details.css';
 import '../styles/Credits.css';
 import { CreditsResponse } from '../typeAliases/Credits';
 import { Link, useParams } from 'react-router-dom';
-import { noImgFound } from "../assets/images/no-image-found.jpg";
+import noImgFound from "../assets/images/no-image-found.jpg";
 
 const Credits = () => {
     const { id, type } = useParams();

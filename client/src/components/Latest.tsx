@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import useAxios from '../hooks/useAxios';
 import { useState } from 'react';
 import { API_URL } from '../config/api';
-import { noImgFound } from "../assets/images/no-image-found.jpg";
+import noImgFound from "../assets/images/no-image-found.jpg";
 
 type LatestResponse = {
     results: {

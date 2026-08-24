@@ -2,7 +2,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import useAxios from '../hooks/useAxios';
 import MorePages from '../components/MorePages';
 import { useEffect, useState } from 'react';
-import { noImgFound } from "../assets/images/no-image-found.jpg";
+import noImgFound from "../assets/images/no-image-found.jpg";
 
 type UpcomingResponse = {
     results: {

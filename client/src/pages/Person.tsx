@@ -2,7 +2,7 @@ import useAxios from "../hooks/useAxios";
 import '../styles/Person.css';
 import { Credits, Details } from "../typeAliases/Person";
 import { Link, useParams } from "react-router-dom";
-import { noImgFound } from "../assets/images/no-image-found.jpg";
+import noImgFound from "../assets/images/no-image-found.jpg";
 
 const Person = () => {
     const { id } = useParams();

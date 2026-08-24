@@ -2,7 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { CreditsResponse } from "../typeAliases/Credits";
 import useAxios from "../hooks/useAxios";
 import { API_URL } from "../config/api";
-import { noImgFound } from "../assets/images/no-image-found.jpg";
+import noImgFound from "../assets/images/no-image-found.jpg";
 
 const Cast = () => {
     const { id, type } = useParams();

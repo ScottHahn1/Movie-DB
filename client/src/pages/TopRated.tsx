@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import useAxios from '../hooks/useAxios';
 import MorePages from '../components/MorePages';
 import { API_URL } from '../config/api';
-import { noImgFound } from "../assets/images/no-image-found.jpg";
+import noImgFound from "../assets/images/no-image-found.jpg";
 
 type TopRatedResponse = {
     results: {
