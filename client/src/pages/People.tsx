@@ -3,6 +3,7 @@ import useAxios from "../hooks/useAxios";
 import '../styles/People.css';
 import { Link, useSearchParams } from "react-router-dom";
 import MorePages from "../components/MorePages";
+import noImgFound from "../assets/images/no-image-found.jpg";
 
 type PeopleData = {
     page: number,
@@ -35,8 +36,6 @@ const People = () => {
         { page }
     );
 
-    const noImgFound = require('../assets/images/no-image-found.jpg');
-    
     useEffect(() => {
         if (!people) return;
         setTotalPages(Math.min(people.total_pages, 500))

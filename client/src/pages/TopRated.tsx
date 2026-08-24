@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import useAxios from '../hooks/useAxios';
 import MorePages from '../components/MorePages';
 import { API_URL } from '../config/api';
+import noImgFound from "../assets/images/no-image-found.jpg";
 
 type TopRatedResponse = {
     results: {
@@ -33,8 +34,6 @@ const TopRated = () => {
         `${API_URL}/${mediaType}/topRated`,
         { page }
     );
-
-    const noImgFound = require('../assets/images/no-image-found.jpg');
 
     useEffect(() => {
         if (!data) return;

@@ -2,6 +2,7 @@ import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import useAxios from '../hooks/useAxios';
 import MorePages from '../components/MorePages';
+import noImgFound from "../assets/images/no-image-found.jpg";
 
 type PopularResponse = {
     results: {
@@ -32,8 +33,6 @@ const Popular = () => {
         `https://movie-db-omega-ten.vercel.app/${mediaType}/popular`,
         { page }
     );
-
-    const noImgFound = require('../assets/images/no-image-found.jpg');
 
     useEffect(() => {
         if (!data) return;

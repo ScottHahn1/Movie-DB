@@ -38,18 +38,6 @@ export const Rate = ({ id, title, media_type, release_date, poster_path, vote_av
         .catch(err => console.log(err));
     }
 
-    const getRating = () => {
-        axios.get(`${API_URL}/ratings/${id}`, {
-            params: { userId: sessionStorage.getItem('userId') }
-        })
-        .then(res => {
-            setMovie(res.data);
-        })
-        .catch(err => {
-            console.log(err);
-        })
-    }
-
     const updateRating = (newRating: number) => {
         axios({
             method: 'PUT',
@@ -66,8 +54,16 @@ export const Rate = ({ id, title, media_type, release_date, poster_path, vote_av
     }
 
     useEffect(() => {
-        getRating();
-    }, [newRating])
+      axios.get(`${API_URL}/ratings/${id}`, {
+          params: { userId: sessionStorage.getItem('userId') }
+      })
+      .then(res => {
+          setMovie(res.data);
+      })
+      .catch(err => {
+          console.log(err);
+      })
+    }, [id, newRating])
 
     return (
         <div className='rate'>

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import noImgFound from "../assets/images/no-image-found.jpg";
 
 type Props = {
     actingCredits?: string;
@@ -23,8 +24,6 @@ const generateLink = (searchResultsType: string, id: number, name: string) => {
 }
 
 const SearchResults = ({ actingCredits, id, image, name, releaseDate, overview, searchResultsType }: Props) => {
-    const noImgFound = require('../assets/images/no-image-found.jpg');
-
     return (
         <div className='search-movie'>
             <Link 

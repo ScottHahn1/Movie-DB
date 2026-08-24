@@ -3,6 +3,7 @@ import '../styles/Details.css';
 import '../styles/Credits.css';
 import { CreditsResponse } from '../typeAliases/Credits';
 import { Link, useParams } from 'react-router-dom';
+import noImgFound from "../assets/images/no-image-found.jpg";
 
 const Credits = () => {
     const { id, type } = useParams();
@@ -12,8 +13,6 @@ const Credits = () => {
         {}
     );
 
-    const noImgFound = require('../assets/images/no-image-found.jpg');
-
     if (loading) {
         return <div className='loading' />
     }
@@ -21,7 +20,7 @@ const Credits = () => {
     return (
         <div className='credits-crew'>
             <>
-                <div className='cast'>
+                <div className='credits-card cast'>
                     <h4>Cast ({ credits?.cast?.length })</h4>
                     {
                         credits?.cast?.map(person => (
@@ -41,7 +40,7 @@ const Credits = () => {
                     }
                 </div>
 
-                <div className='crew'>
+                <div className='credits-card crew'>
                     <h4>Crew ({ credits?.crew?.length })</h4>
                     {
                         credits?.crew?.map(person => (

@@ -2,6 +2,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import useAxios from '../hooks/useAxios';
 import MorePages from '../components/MorePages';
 import { useEffect, useState } from 'react';
+import noImgFound from "../assets/images/no-image-found.jpg";
 
 type UpcomingResponse = {
     results: {
@@ -31,8 +32,6 @@ const Upcoming = () => {
         'https://movie-db-omega-ten.vercel.app/movies/upcoming', 
         { page }
     );
-
-    const noImgFound = require('../assets/images/no-image-found.jpg');
 
     useEffect(() => {
         if (!data) return;

@@ -2,14 +2,13 @@ import useAxios from "../hooks/useAxios";
 import '../styles/Person.css';
 import { Credits, Details } from "../typeAliases/Person";
 import { Link, useParams } from "react-router-dom";
+import noImgFound from "../assets/images/no-image-found.jpg";
 
 const Person = () => {
     const { id } = useParams();
 
     const { data: person, loading: personLoading } = useAxios<Details, {}>(`https://movie-db-omega-ten.vercel.app/people/${id}`, {});
     const { data: credits, loading: creditsLoading } = useAxios<Credits, {}>(`https://movie-db-omega-ten.vercel.app/people/credits/${id}`, {});
-
-    const noImgFound = require('../assets/images/no-image-found.jpg');
 
     if (personLoading || creditsLoading) {
         return <div className='loading' />

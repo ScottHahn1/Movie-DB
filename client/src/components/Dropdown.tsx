@@ -1,13 +1,14 @@
 import { NavLink } from "react-router-dom";
 
 type Props = {
-    linkNames: string[]
-    linkURLs: string[]
+    visible: boolean;
+    linkNames: string[];
+    linkURLs: string[];
 }
 
-const Dropdown = ({ linkNames, linkURLs}: Props ) => {
+const Dropdown = ({ visible, linkNames, linkURLs}: Props ) => {
     return (
-        <div className='dropdown'>
+        <div className={`dropdown ${visible ? 'dropdown-visible' : ''}`}>
             {
                 linkNames.map((name, index) => (
                     <NavLink key={name} to={linkURLs[index]}>
