@@ -145,7 +145,7 @@ const Details = ({ user }: Props) => {
 
             <div className='full-cast-crew'>
                 <Link to={`/credits/${type}/${id}`}>
-                    <h3>Full Cast And Crew</h3>
+                    <h3>Full Cast And Crew &#8594;</h3>
                 </Link>
             </div>
         </div>
