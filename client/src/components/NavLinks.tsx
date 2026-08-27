@@ -8,8 +8,10 @@ const NavLinks = () => {
     
     return (
         <>
-            <li  onMouseLeave={() => setMoviesDropdownVisible(false)}>
-                <span onMouseEnter={() => setMoviesDropdownVisible(true)} style={{ color: 'white' }}>Movies</span>
+            <li onMouseLeave={() => setMoviesDropdownVisible(false)}>
+                <span onMouseEnter={() => setMoviesDropdownVisible(true)} style={{ color: 'white' }}>
+                  Movies
+                </span>
                 
                 <span onMouseLeave={() => setMoviesDropdownVisible(false)}>
                   <Dropdown
@@ -21,7 +23,9 @@ const NavLinks = () => {
             </li>
 
             <li onMouseLeave={() => setShowsDropdownVisible(false)}>
-                <span style={{ color: 'white' }}>TV Shows</span>
+                <span onMouseEnter={() => setShowsDropdownVisible(true)} style={{ color: 'white' }}>
+                  Shows
+                </span>
 
                 <span onMouseLeave={() => setShowsDropdownVisible(false)}>
                   <Dropdown 
@@ -33,7 +37,9 @@ const NavLinks = () => {
             </li>
 
             <li onMouseLeave={() => setPeopleDropdownVisible(false)}>
-                <span style={{ color: 'white' }}>People</span>
+                <span onMouseEnter={() => setPeopleDropdownVisible(true)} style={{ color: 'white' }}>
+                  People
+                </span>
 
               <span onMouseLeave={() => setPeopleDropdownVisible(false)}>
                 <Dropdown 
