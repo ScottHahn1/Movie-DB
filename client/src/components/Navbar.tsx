@@ -16,8 +16,9 @@ const Navbar = ({ loggedIn, setLoggedIn, user, setUser }: Props) => {
   return (
     <nav>
         <Link to='/'>
-            <h1 style={{ cursor: 'pointer', textDecoration: 'none' }}>Movie Database</h1>
+            <h1 style={{ cursor: 'pointer', textDecoration: 'none' }}>FilmAve</h1>
         </Link>
+        
         <ul>
             <li>
                 <Link to='/'>Home</Link>

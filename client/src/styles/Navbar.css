@@ -1,5 +1,5 @@
 nav {
-    background-color: black;
+    background-color: #080808;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -65,9 +65,9 @@ nav li {
 }
 
 .login-register button:hover {
-  background-color: lightgreen;
+  background-color: #16b957;
   color: black;
-  border-color: lightgreen;
+  border-color: #16b957;
   transform: translateY(-2px);
 }
 
@@ -127,7 +127,7 @@ form {
 form button {
     width: 5rem;
     border: 1px solid lightgray;
-    background-color: lightgreen;
+    background-color: #16b957;
     font-size: 1.1rem;
 }
 
