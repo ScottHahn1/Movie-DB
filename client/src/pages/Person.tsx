@@ -76,7 +76,7 @@ const Person = () => {
                                                 `tv/${credit.id}/${credit.name.replace(/\s+/g, '-')}` }`
                                             }
                                         >
-                                            <div style={{ display: 'flex', flexDirection: 'column', color: 'black' }}>
+                                            <div style={{ display: 'flex', flexDirection: 'column' }}>
                                                 <img 
                                                     src={person.profile_path ? `https://image.tmdb.org/t/p/w300/${credit.poster_path}` : noImgFound} 
                                                     alt={credit.title} 
@@ -114,8 +114,11 @@ const Person = () => {
                                                             credit.first_air_date.toString().slice(4, 15)  
                                                         }
                                                     </h5> 
-                                                    as &nbsp;
-                                                    { credit.character }
+
+                                                    <p className="credit-character">
+                                                      as &nbsp;
+                                                      { credit.character }
+                                                    </p>
                                                 </div>
                                             </Link>
                                         ))
