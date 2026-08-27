@@ -1,13 +1,6 @@
-.home {
-    margin-top: 6rem;
-}
-
-.home .data-container {
-    margin-top: 0;
-}
-
 .main-heading {
-    background-color: rgb(142, 233, 142);
+    background-color: #16b957;
+    color: black;
     min-height: 15rem;
     display: flex;
     justify-content: center;
