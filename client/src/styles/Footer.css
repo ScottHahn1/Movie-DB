@@ -1,7 +1,6 @@
 footer {
-    background-color: black;
-    color: white;
-    font-family: "RobotoMedium";
+    background-color: #080808;
+    color: #ffffff;
     line-height: 2rem;
     text-align: center;
     width: 100%;
@@ -25,5 +24,9 @@ footer {
 
 .footer-links a:hover, .made-by > *:hover  {
     text-decoration: none;
-    color: lightgreen;
+    color: #16b957;
+}
+
+.footer-links a {
+  color: #ffffff;
 }
