@@ -66,10 +66,10 @@ const TopRated = () => {
                 <div className='error'>No top rated {mediaType === 'movies' ? 'movies' : 'TV shows'} available.</div>
             }
 
-            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+            <div className='movie-show-container'>
                 {
                     data?.results?.map(movie => (
-                        <div key={movie.id} className='data'>
+                        <div key={movie.id} className='movie-show-card'>
                             <Link to={
                                 mediaType === 'movies' ?
                                 `/details/movie/${movie.id}/${movie.title?.replace(/\s+/g, '-')}` 

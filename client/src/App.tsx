@@ -30,28 +30,26 @@ function App() {
       <BrowserRouter>
         <Navbar loggedIn={loggedIn} setLoggedIn={setLoggedIn} user={user} setUser={setUser} />
 
-        <Routes>
-          <Route path='/register' element={ <Register /> } />
-          <Route path='/login' element={ <Login setUser={setUser} setLoggedIn={setLoggedIn}  /> } />
-      
-          <Route index element={<Home searched={searched} setSearched={setSearched} />} />
+        <main>
+          <Routes>
+            <Route path='/register' element={ <Register /> } />
+            <Route path='/login' element={ <Login setUser={setUser} setLoggedIn={setLoggedIn}  /> } />
+            <Route index element={<Home searched={searched} setSearched={setSearched} />} />
           
-          <Route path='/details/:type/:id/:title' element={ <Details user={user} /> } />
-          <Route path='/person/:id/:name' element={ <Person /> } /> 
-          <Route path='/credits/:type/:id' element={ <Credits /> } /> 
-          <Route path='/popular/people' element={ <People /> } /> 
-          <Route path='/search/:query' element={ <Search /> } />
-
-          <Route path='/favourites' element={ <Favourites user={user} /> } /> 
-          <Route path='/ratings' element={ <Ratings /> } /> 
-
-          <Route path='/popular/:type' element={ <Popular /> } />
-          <Route path='/nowPlaying/:type' element={ <NowPlaying /> } />
-          <Route path='/topRated/:type' element={ <TopRated /> } />
-          <Route path='/upcoming/movies' element={ <Upcoming /> } />
-
-          <Route path='*' element={<NoPage />} />
-        </Routes>
+            <Route path='/details/:type/:id/:title' element={ <Details user={user} /> } />
+            <Route path='/person/:id/:name' element={ <Person /> } />
+            <Route path='/credits/:type/:id' element={ <Credits /> } />
+            <Route path='/popular/people' element={ <People /> } />
+            <Route path='/search/:query' element={ <Search /> } />
+            <Route path='/favourites' element={ <Favourites user={user} /> } />
+            <Route path='/ratings' element={ <Ratings /> } />
+            <Route path='/popular/:type' element={ <Popular /> } />
+            <Route path='/nowPlaying/:type' element={ <NowPlaying /> } />
+            <Route path='/topRated/:type' element={ <TopRated /> } />
+            <Route path='/upcoming/movies' element={ <Upcoming /> } />
+            <Route path='*' element={<NoPage />} />
+          </Routes>
+        </main>
 
         <Footer /> 
       </BrowserRouter>

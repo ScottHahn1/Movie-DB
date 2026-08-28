@@ -50,14 +50,14 @@ const Trending = ({ setTrendingLoading }: Props) => {
                     <h2>Trending</h2>
 
                     <button 
-                        style={{ backgroundColor: mediaType === 'movie' ? 'rgb(142, 233, 142)' : 'white' }} 
+                        style={{ backgroundColor: mediaType === 'movie' ? '#16b957' : 'white' }} 
                         onClick={() => setMediaType('movie')}
                     >
                         Movies
                     </button>
 
                     <button 
-                        style={{ backgroundColor: mediaType === 'movie' ? 'white' : 'rgb(142, 233, 142)' }} 
+                        style={{ backgroundColor: mediaType === 'movie' ? 'white' : '#16b957' }} 
                         onClick={() => setMediaType('tv')}
                     >
                         TV Shows
@@ -72,13 +72,11 @@ const Trending = ({ setTrendingLoading }: Props) => {
                     <div className='error'>No trending {mediaType === 'movie' ? 'movies' : 'TV shows'} available.</div>
                 }
 
-                <br></br>
-
-                <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                <div className="movie-show-container">
                     {
                         mediaType === 'movie' ?
                         trending?.results?.map(movie => (
-                            <div key={movie.id} className='data'>
+                            <div key={movie.id} className='movie-show-card'>
                                 <Link to={`/details/movie/${movie.id}/${movie.title?.replace(/\s+/g, '-')}`}>
                                     <img 
                                         src={movie.poster_path ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}` : noImgFound} 
@@ -92,7 +90,7 @@ const Trending = ({ setTrendingLoading }: Props) => {
                         ))
                         :
                         trending?.results?.map(show => (
-                            <div key={show.id} className='data'>
+                            <div key={show.id} className='movie-show-card'>
                                 <Link to={`/details/tv/${show.id}/${show.name?.replace(/\s+/g, '-')}`}>
                                     <img 
                                         src={show.poster_path ? `https://image.tmdb.org/t/p/w500/${show.poster_path}` : noImgFound} 
