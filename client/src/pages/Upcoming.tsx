@@ -59,10 +59,10 @@ const Upcoming = () => {
                 <div className='error'>No upcoming movies available.</div>
             }
 
-            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+            <div className='movie-show-container'>
                 {
                     data?.results?.map(movie => (
-                        <div key={movie.id} className='data'>
+                        <div key={movie.id} className='movie-show-card'>
                             <Link to={`/details/movie/${movie.id}/${movie.title?.replace(/\s+/g, '-')}`}>
                                 <img
                                     src={ movie.poster_path ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}` : noImgFound } 

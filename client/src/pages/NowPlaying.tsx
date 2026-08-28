@@ -69,10 +69,10 @@ const NowPlaying = () => {
                 <div className='error'>No {mediaType === 'movies' ? 'movies currently showing' : 'TV shows on the air'}.</div>
             }
 
-            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+            <div className='movie-show-container'>
                 {
                     data?.results?.map(movie => (
-                        <div key={movie.id} className='data'>
+                        <div key={movie.id} className='movie-show-card'>
                             <Link to={
                                 mediaType === 'movies' ?
                                 `/details/movie/${movie.id}/${movie.title?.replace(/\s+/g, '-')}` 
