@@ -1,6 +1,5 @@
 .details-container {
   animation: fade-in 1.5s linear;
-  margin-top: 6rem;
 }
 
 .details-container a {
@@ -8,7 +7,7 @@
 }
 
 .movie-container, .show-container {
-    color: whitesmoke;
+    color: #ffffff;
     background-repeat: no-repeat !important;
     background-size: cover !important;
     background-position: center !important;
@@ -51,8 +50,10 @@
 }
 
 .credits-container {
-    gap: 8%;
     margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
 }
 
 .credits-cast {
@@ -61,7 +62,6 @@
     overflow-x: scroll;
     overflow-y: hidden;
     margin-left: 1rem;
-    /* width: 75%; */
 }
 
 .credits-cast::-webkit-scrollbar {
@@ -81,7 +81,7 @@
     flex-direction: column;
     text-align: center;
     width: 10rem;
-    color: #666;
+    color: #807e7e;
 }
 
 .person img {
@@ -103,6 +103,7 @@
     cursor: pointer;
     font-size: .9rem;
     margin: 0.5rem 0 0.25rem;
+    color: #ffffff;
 }
 
 .facts {
@@ -110,19 +111,24 @@
     flex-wrap: wrap;
     gap: 1.5rem;
     padding: 1.5rem;
-    background-color: #f7f7f7;
     border-radius: 10px;
+    background-color: #181818;;
 }
 
 .facts p {
     margin: 0;
     min-width: 120px;
-    color: #666;
+    color: #ffffff;
 }
 
 .facts p b {
-    color: #222;
+    color: #807e7e;
     font-size: 0.9rem;
+}
+
+.full-cast-crew h3 {
+  color: #ffffff;
+  margin-left: 1rem;
 }
 
 .rate {
